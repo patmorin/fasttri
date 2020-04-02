@@ -48,23 +48,15 @@
   Pat Morin%
     \thanks{School of Computer Science, Carleton University, Canada. This research was partially supported by NSERC.}
 }
-\date{}
+% \date{}
 
 \begin{document}
-\begin{titlepage}
 \maketitle
 
 \begin{abstract}
   Dujmović et al (FOCS2019) recently proved that every planar graph $G$ is a subgraph of $H\boxtimes P$, where $\boxtimes$ denotes the strong graph product, $H$ is a graph of treewidth 8 and $P$ is a path.  This result has found numerous applications to linear graph layouts, graph colouring, and graph labelling.  The proof given by Dujmović et al is based on a similar decomposition of Pilipczuk and Siebertz (SODA2019) which is constructive and leads to an $O(n^2)$ time algorithm for finding $H$ and the mapping from $V(G)$ onto $V(H\boxtimes P)$.  In this note, we show that this algorithm can be made to run in $O(n\log n)$ time.
 \end{abstract}
-\end{titlepage}
-\pagenumbering{roman}
-\tableofcontents
 
-\newpage
-
-\setcounter{page}{0}
-\pagenumbering{arabic}
 \section{Introduction}
 
 \section{Preliminaries}
@@ -78,28 +70,30 @@ Our algorithm makes use of a data structure that preprocesses a rooted $n$-verte
 The proof of the following lemma uses fairly standard techniques from the field of data structures.
 
 \begin{lem}
-  There exists a data structure that, given an $n$-vertex rooted tree $T$, uses $O(n\log n)$ space, can be constructed in $O(n\log n)$ time, supports the operation $\textsc{FirstColour}(v)$ in $O(1)$ time and supports $m$ $\textsc{Colour}(e,c)$ operations in $O(n+m\log n)$ time.
+  There exists a data structure that, given an $n$-vertex rooted tree $T$, uses $O(n\log n)$ space, can be constructed in $O(n\log n)$ time, supports the operation $\textsc{FirstColour}(v)$ in $O(1)$ time and supports $m$ $\textsc{Colour}(e,c)$ operations in $O(n\log n + m)$ time.
 \end{lem}
 
 \begin{proof}
-    We decompose $T$ in a sequence $F_0,\ldots,F_r$ of forests, where $F_0:=T$ and, for each $i\in\{1,\ldots,r\}$, $F_i$ is a spanning subgraph of $F_{i-1}$ and each tree in $F_i$ has size at most $\lceil n/2^i\rceil$.  
+    We decompose $T$ in a sequence $F_0,\ldots,F_r$ of forests, where $F_0:=T$ and, for each $i\in\{1,\ldots,r\}$, $F_i$ is a spanning subgraph of $F_{i-1}$ and each tree in $F_i$ has size at most $\lceil n/2^i\rceil$.
 
     To obtain the forest $F_i$ we take each tree $T'$ in $F_{i-1}$
-    a find a node $v$ of $T'$ that has at least $|T'|/2$ $T'$-descendants and such that each child of $v$ has at most $|T'|/2$ $T'$-descendants.  We then remove the edges between $v$ and its children in $T'$.  Doing this for every tree $T'$ in $F_{i-1}$ gives the (refined) forest $F_i$.  This process ends after at most $r:=\lceil\log_2 n\rceil$ iterations, at which point $F_r$ has no edges.  
-    
-    
+    a find a node $v$ of $T'$ that has at least $|T'|/2$ $T'$-descendants and such that each child of $v$ has at most $|T'|/2$ $T'$-descendants.  We then remove the edges between $v$ and its children in $T'$.  Doing this for every tree $T'$ in $F_{i-1}$ gives the (refined) forest $F_i$.  This process ends after at most $r:=\lceil\log_2 n\rceil$ iterations, at which point $F_r$ has no edges.  For each node $x$ of $T$ we store a list of $r+1$ pointers $p_{x,0},\ldots,p_{x,r}$ where $p_{x,i}$ is a pointer to the root of the tree $T_{i,x}$ in $F_i$ that contains $x$.
 
-    
-    For each node $w$ of $T$ store the index $i_w\in\{0,\ldots,k\}$ of the tree $T_{i_w}$ that contains $w$.  Now, recursively preprocess the subtrees $T_0,\ldots,T_k$.  Finding the node $v$ takes $O(n)$ time, and the recursion leads to an overall running time of $O(n\log n)$.
-    
-    With this preprocessing done, the operations are implmented as follows:
+    Each node $x$ of $T$ stores two values:
+    \begin{compactenum}
+      \item $c_x$ is the colour (if any) of the edge between $x$ and its parent (if any).
+      \item $i_x$ is the largest $0\in\{1,\ldots,r\}$ such that the path from $x$ to the root of the tree $T_{i,x}$ in the forest $F_i$ contains a coloured edge.
+    \end{compactenum}
+
+    With this preprocessing done, the operations are implemented as follows:
     \begin{enumerate}
-    \item $\textsc{Colour}(e,c)$. Let $e=xy$ where $x$ is the parent of $y$.  Then we store the colour $c$ with the node $y$.
-    
-    \item $\textsc{FirstColour}(w)$:  First check if $i_w=0$.  If so, $w$ is a node of $T_0$, so recursively call $\textsc{FirstColour}(v)$ and return the result.  Otherwise, $w$ is a node of $T_{i}$, for some $i:=i_w\in\{1,\ldots,k\}$.  
-    \end{enumerate}
-    
-  
+    \item $\textsc{FirstColour}(x)$:  If $c_x$ is defined, then return $c_x$.   Otherwise, if $i_x$ is not defined, then return $\perp$ since the path from $x$ to the root of $T=F_0$ contains no coloured edge.  Otherwise, $i_x$ is defined, so consider the tree $T_{i,x}$ in the forest $F_{i_x}$ that contains $x$.  (The root of $T_{i,x}$ can be accessed with $p_{x,i}$.)  Since $i_x=i$, $|T_{i,x}|\ge 2$.  Therefore, there is a node $v$ of $T_{i,x}$ that was used to split $T_{i,x}$ into two or more trees in $F_{i+1}$.  One of these trees, $T_{i+1,x}$, contains $x$.  No edge on the path from $x$ to the root of $T_{i+1,x}$ is coloured, therefore, $v$ must be a $T$-ancestor of $x$ and some edge on the path from $v$ to the root of $T_{i,x}$ is coloured.  Therefore, $i_v\ge i+1$ and we can continue to find .
+    $\textsc{FirstColour}(v)$.  This process clearly terminates after at most $r=\lceil\log_2 n\rceil$ rounds and therefore this algorithm runs in $O(\log n)$ time.
+
+    \item $\textsc{Colour}(e,c)$. Let $e=xy$ where $x$ is the parent of $y$. Let $i$ be the unique index such that $xy\in E(F_i)$ but $xy\not\in E(F_{i+1})$.  Then $y$ is the root of a tree $T_{i+1,y}$ in the forest $F_{i+1}$.  We traverse $T_{i+1,y}$ setting the value $i_w$ of each node $w$ to $i_w:=i$, unless it is already greater than or equal to $i$.  This traversal takes time proportional to the number of nodes whose $i_w$ values are updated.  To see that this achieves the claimed running time, note that, for each node $w\in V(T)$, $i_w$ increases monotonically from $-1$ to at most $r=\lceil\log_2 n\rceil$, therefore each value $i_w$ is updated at most $O(\log n)$ times, so the total cost of all traversals performed during all updates is at most $O(n\log n)$.
+  \end{enumerate}
+
+
 \end{proof}
 
 
