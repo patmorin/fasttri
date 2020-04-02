@@ -55,7 +55,7 @@
 \maketitle
 
 \begin{abstract}
-  Dujmović et al (FOCS2019) recently proved that every planar graph $G$ is a subgraph of $H\boxtimes P$, where $\boxtimes$ denotes the strong graph product, $H$ is a graph of treewidth 8 and $P$ is a path.  This result has found numerous applications to linear graph layouts, graph colouring, and graph labelling.  The proof given by Dujmović et al is based on a similar decomposition of Pilipczuk and Siebertz (SODA2019) which is constructive and leads to an $O(n^2)$ time algorithm for finding $H$ and the mapping from $V(G)$ onto $V(H\boxtimes P)$.  In this note, we show that this algorithm can be made to run in $O(n\log^2 n)$ time.
+  Dujmović et al (FOCS2019) recently proved that every planar graph $G$ is a subgraph of $H\boxtimes P$, where $\boxtimes$ denotes the strong graph product, $H$ is a graph of treewidth 8 and $P$ is a path.  This result has found numerous applications to linear graph layouts, graph colouring, and graph labelling.  The proof given by Dujmović et al is based on a similar decomposition of Pilipczuk and Siebertz (SODA2019) which is constructive and leads to an $O(n^2)$ time algorithm for finding $H$ and the mapping from $V(G)$ onto $V(H\boxtimes P)$.  In this note, we show that this algorithm can be made to run in $O(n\log n)$ time.
 \end{abstract}
 \end{titlepage}
 \pagenumbering{roman}
@@ -81,12 +81,13 @@ The proof of the following lemma uses fairly standard techniques from the field 
   There exists a data structure that, given an $n$-vertex rooted tree $T$, uses $O(n\log n)$ space, can be constructed in $O(n\log n)$ time, supports the operation $\textsc{FirstColour}(v)$ in $O(1)$ time and supports $m$ $\textsc{Colour}(e,c)$ operations in $O(n+m\log n)$ time.
 \end{lem}
 
-\begin{lem}
-    If $n\le 1$, then the problem is trivial, so assume that $|T|\ge 2$.
-    
+\begin{proof}
     We decompose $T$ in a sequence $F_0,\ldots,F_r$ of forests, where $F_0:=T$ and, for each $i\in\{1,\ldots,r\}$, $F_i$ is a spanning subgraph of $F_{i-1}$ and each tree in $F_i$ has size at most $\lceil n/2^i\rceil$.  
 
-    Decompose $T$ by removing a node $v$ that has at least $n/2$ $T$-descendants and each child of $v$ is the root of a subtree of size at most $n/2$. Removing all the edges between $v$ and its children creates a forest $F$ containing tree $T_0,\ldots,T_k$ where $T_0$ contains $v$ (and the root of $T$) and $T_i$ is rooted at a child of $v$, for each $i\in\{1,\ldots,k\}$.
+    To obtain the forest $F_i$ we take each tree $T'$ in $F_{i-1}$
+    a find a node $v$ of $T'$ that has at least $|T'|/2$ $T'$-descendants and such that each child of $v$ has at most $|T'|/2$ $T'$-descendants.  We then remove the edges between $v$ and its children in $T'$.  Doing this for every tree $T'$ in $F_{i-1}$ gives the (refined) forest $F_i$.  This process ends after at most $r:=\lceil\log_2 n\rceil$ iterations, at which point $F_r$ has no edges.  
+    
+    
 
     
     For each node $w$ of $T$ store the index $i_w\in\{0,\ldots,k\}$ of the tree $T_{i_w}$ that contains $w$.  Now, recursively preprocess the subtrees $T_0,\ldots,T_k$.  Finding the node $v$ takes $O(n)$ time, and the recursion leads to an overall running time of $O(n\log n)$.
@@ -99,7 +100,7 @@ The proof of the following lemma uses fairly standard techniques from the field 
     \end{enumerate}
     
   
-\end{lem}
+\end{proof}
 
 
 \end{document}
