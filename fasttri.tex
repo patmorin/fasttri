@@ -61,40 +61,66 @@
 
 \section{Preliminaries}
 
-Our algorithm makes use of a data structure that preprocesses a rooted $n$-vertex tree $T$ whose edges are all initially uncoloured and supports the following operations:
+Our algorithm makes use of a data structure that preprocesses a rooted $n$-vertex tree $T$ whose vertices are all initially uncoloured and supports the following operations:
 \begin{enumerate}
-  \item $\textsc{Colour}(e,c)$: Set the colour of an edge $e$ of $T$ to some value $c\in\{1,2,3\}$.
-  \item $\textsc{FirstColour}(w)$: Return the colour of the first coloured edge on the path from node $w$ to the root of $T$, or return $\perp$ if no such edge exists.
+  \item $\textsc{Colour}(v,c)$: Set the colour of the node $v$ of $T$ to some integer value $c$.  A precondition of this operation is that $v$ should have no coloured strict $T$-descendant or $v$ should have been coloured by a previous call to $\textsc{Colour}(v,c)$.
+  
+  \item $\textsc{FirstColour}(w)$: Return the colour of the first coloured node on the path from node $w$ to the root of $T$, or return $\perp$ if all nodes on the path from $w$ to the root of $T$ are still uncoloured.
 \end{enumerate}
 
 The proof of the following lemma uses fairly standard techniques from the field of data structures.
 
 \begin{lem}
-  There exists a data structure that, given an $n$-vertex rooted tree $T$, uses $O(n\log n)$ space, can be constructed in $O(n\log n)$ time, supports the operation $\textsc{FirstColour}(v)$ in $O(1)$ time and supports $m$ $\textsc{Colour}(e,c)$ operations in $O(n\log n + m)$ time.
+  There exists a data structure that, given an $n$-vertex rooted tree $T$, uses $O(n\log n)$ space, can be constructed in $O(n\log n)$ time, supports the operation $\textsc{FirstColour}(v)$ in $O(1)$ time and supports $m$ $\textsc{Colour}(e,c)$ operations in $O(n\log n)$ time.
 \end{lem}
 
 \begin{proof}
     We decompose $T$ in a sequence $F_0,\ldots,F_r$ of forests, where $F_0:=T$ and, for each $i\in\{1,\ldots,r\}$, $F_i$ is a spanning subgraph of $F_{i-1}$ and each tree in $F_i$ has size at most $\lceil n/2^i\rceil$.
 
     To obtain the forest $F_i$ we take each tree $T'$ in $F_{i-1}$
-    a find a node $v$ of $T'$ that has at least $|T'|/2$ $T'$-descendants and such that each child of $v$ has at most $|T'|/2$ $T'$-descendants.  We then remove the edges between $v$ and its children in $T'$.  Doing this for every tree $T'$ in $F_{i-1}$ gives the (refined) forest $F_i$.  This process ends after at most $r:=\lceil\log_2 n\rceil$ iterations, at which point $F_r$ has no edges.  For each node $x$ of $T$ we store a list of $r+1$ pointers $p_{x,0},\ldots,p_{x,r}$ where $p_{x,i}$ is a pointer to the root of the tree $T_{i,x}$ in $F_i$ that contains $x$.
+    a find a node $v$ of $T'$ that has at least $|T'|/2$ $T'$-descendants and such that each child of $v$ has at most $|T'|/2$ $T'$-descendants.  We then remove the edges between $v$ and its children in $T'$.  Doing this for every tree $T'$ in $F_{i-1}$ gives the (refined) forest $F_i$.  This process ends after at most $r:=\lceil\log_2 n\rceil$ iterations, at which point $F_r$ has no edges.  
+    
+    For each node $x$ of $T$ we store a list of $r+1$ pointers $p_{x,0},\ldots,p_{x,r}$ where $p_{x,i}$ is a pointer to the root of the tree $T_{i,x}$ in $F_i$ that contains $x$.  For each $i\in\{0,\ldots,r\}$, and each tree $T_{i,j}$ in the forest $F_i$ with $|T_{i,j}\ge 2|$, the root of $T_{i,j}$ stores a pointer to the node $v$ that is used to split $T$ into $2$ or more trees in $F_{i+1}$.
 
     Each node $x$ of $T$ stores two values:
     \begin{compactenum}
-      \item $c_x$ is the colour (if any) of the edge between $x$ and its parent (if any).
-      \item $i_x$ is the largest $0\in\{1,\ldots,r\}$ such that the path from $x$ to the root of the tree $T_{i,x}$ in the forest $F_i$ contains a coloured edge.
+      \item $c_x$ is the colour (if any) assigned to $x$ by the most recent call to $\textsc{Colour}(x)$.
+      \item $i_x$ is the largest $i\in\{1,\ldots,r\}$ such that the path from $x$ to the root of the tree $T_{i,x}$ in the forest $F_i$ contains a coloured vertex, or $-1$ if there is no coloured vertex on the path from $x$ to the root of $T$.  Note that the value of $i_x$ is non-decreasing on root-to-leaf paths in $T$.
     \end{compactenum}
 
     With this preprocessing done, the operations are implemented as follows:
     \begin{enumerate}
-    \item $\textsc{FirstColour}(x)$:  If $c_x$ is defined, then return $c_x$.   Otherwise, if $i_x$ is not defined, then return $\perp$ since the path from $x$ to the root of $T=F_0$ contains no coloured edge.  Otherwise, $i_x$ is defined, so consider the tree $T_{i,x}$ in the forest $F_{i_x}$ that contains $x$.  (The root of $T_{i,x}$ can be accessed with $p_{x,i}$.)  Since $i_x=i$, $|T_{i,x}|\ge 2$.  Therefore, there is a node $v$ of $T_{i,x}$ that was used to split $T_{i,x}$ into two or more trees in $F_{i+1}$.  One of these trees, $T_{i+1,x}$, contains $x$.  No edge on the path from $x$ to the root of $T_{i+1,x}$ is coloured, therefore, $v$ must be a $T$-ancestor of $x$ and some edge on the path from $v$ to the root of $T_{i,x}$ is coloured.  Therefore, $i_v\ge i+1$ and we can continue to find .
-    $\textsc{FirstColour}(v)$.  This process clearly terminates after at most $r=\lceil\log_2 n\rceil$ rounds and therefore this algorithm runs in $O(\log n)$ time.
+    \item $\textsc{FirstColour}(x)$:  If $c_x$ is defined, then return $c_x$.   Otherwise, if $i_x$ is not defined, then return $-1$ since the path from $x$ to the root of $T=F_0$ contains no coloured edge.  Otherwise, $i_x$ is defined, so consider the tree $T_{i,x}$ in the forest $F_{i_x}$ that contains $x$.  (The root of $T_{i,x}$ can be accessed with $p_{x,i}$.)  Since $i_x=i$ and $c_x$ is undefined, $|T_{i,x}|\ge 2$.  Therefore, there is a node $v$ of $T_{i,x}$ that was used to split $T_{i,x}$ into two or more trees in $F_{i+1}$.  One of these trees, $T_{i+1,x}$, contains $x$.  No node on the path from $x$ to the root of $T_{i+1,x}$ is coloured, therefore, $v$ must be a $T$-ancestor of $x$ and some edge on the path from $v$ to the root of $T_{i,x}$ is coloured.  Therefore, $i_v\ge i+1$ and we can continue to find $\textsc{FirstColour}(v)$.  This process clearly terminates after at most $r=\lceil\log_2 n\rceil$ rounds and therefore this algorithm runs in $O(\log n)$ time.
 
-    \item $\textsc{Colour}(e,c)$. Let $e=xy$ where $x$ is the parent of $y$. Let $i$ be the unique index such that $xy\in E(F_i)$ but $xy\not\in E(F_{i+1})$.  Then $y$ is the root of a tree $T_{i+1,y}$ in the forest $F_{i+1}$.  We traverse $T_{i+1,y}$ setting the value $i_w$ of each node $w$ to $i_w:=i$, unless it is already greater than or equal to $i$.  This traversal takes time proportional to the number of nodes whose $i_w$ values are updated.  To see that this achieves the claimed running time, note that, for each node $w\in V(T)$, $i_w$ increases monotonically from $-1$ to at most $r=\lceil\log_2 n\rceil$, therefore each value $i_w$ is updated at most $O(\log n)$ times, so the total cost of all traversals performed during all updates is at most $O(n\log n)$.
+    \item $\textsc{Colour}(v,c)$. If $v$ has previously been coloured by a call to $\textsc{Colour}(v,c)$, then there is nothing to do but set $c_v:=c$.  Otherwise, we also set $c_v:=c$ and let $i\in\{0,\ldots,r\}$ be the minimum value such that $v$ is the root of the tree $T_{i,v}$ in $F_i$ that contains $v$.  (The value of $i$ can be found by scanning $p_{v,0},\ldots,p_{v,r}$ for the first $i$ such that $p_{v,i}=v$.)   Since no $T$-descendant of $v$ (including $v$) has been coloured before, $i_w < i$ for each $T$-descendant $w$ of $v$.  We therefore traverse the entire subtree rooted at $v$ and set $i_w:=i$ for each $T$-descendant $w$ of $v$.
+    
+    Now, observe that each time $i_w$ is modified for some node $w$ of $T$, it is increased.  It follows that $i_w$ is modified at most $r+2=O(\log n)$ times.  This implies the $O(n\log n)$ upper bound on the running-time of all $\textsc{Colour}(v,c)$. \qedhere
   \end{enumerate}
-
-
 \end{proof}
+
+
+\section{The Algorithm}
+
+The proof of existence of Dujmović et al \cite{dujmovic.joret.ea:planar} is inductive and leads to a natural recursive algorithm.  The algorithm is initialized with a bread-first-search tree $T$ of the triangulation $G$ and each recursive invocation is given as input a cycle $F$ in $G$. The subgraph of $G$ induced by the vertices of $F$ and the vertices in the interior of $F$ is a near-triangulation, $N$, that does not include the root of $T$.  The cycle $F$ has three special edges whose removal separates $F$ into three non-empty paths $P_1$, $P_2$, and $P_3$.
+
+The paths $P_1$, $P_2$, and $P_3$ along, with the breadth-first search tree $T$ partition the vertices of $N$ into three colour classes.  Each vertex $v\in P_i$ has colour $c(v)=i$.  For each vertex $v\in V(N)\setminus V(F)$, the path from $v$ to the root of $T$ must contain some first vertex $v_F$ of $F$.  The vertex $v$ is assigned to class $c(v)=c(v_F)$.  The conditions imply, by Sperner's Lemmma \cite{X} that $N$ contains a triangular face $\tau=xyz$ that it \emph{trichromatic}, i.e., $c(x)$, $c(v)$, and $c(y)$ are all distinct.  (Note that $0$, $1$, $2$, or $3$ vertices of $\tau$ may be in $V(F)$)  The edges of $F$, $\tau$, and the paths in $T$, $x\rightsquigarrow x_F$, $y\rightsquigarrow y_F$ and $z\rightsquigarrow z_F$ define a graph with at most 4 interior faces, one of which is $\tau$, the others are $Q_1,\ldots,Q_a$ for $a\in\{0,\ldots,3\}$.  For each of the other interior faces, $Q_i$, $V(F)\cap V(Q_i)$ is contained in $V(P_i)\cup V(P_j)$ for some pair $i,j$.  In particular, if $Q$ contains, for example $x$ and $y$, then $V(Q)\cap V(P_{c(z)})=\emptyset$.  
+
+The algorithm then recurses on each 
+
+The vertices in $V(Q)\setminus V(F)$ are containe in $ vertics of $Q$ are those in  
+
+
+
+the root of $T$ is  with the root of $T$ in its exterior and with the property that each path, in, $T$ from a vertex 
+
+\begin{figure}
+  \begin{center}
+    \includegraphics{figs/sperner-1} \\[1ex]
+    \includegraphics{figs/sperner-2} \\[1ex]
+    \includegraphics{figs/sperner-explode-2}
+  \end{center}
+  \caption{The main step in the algorithm: Finding a Sperner triangle in $O(k)$ steps.}
+\end{figure}
 
 
 \end{document}
