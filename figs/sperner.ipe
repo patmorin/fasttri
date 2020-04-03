@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70212" creator="Ipe 7.2.13">
-<info created="D:20200402142341" modified="D:20200403064951"/>
+<info created="D:20200402142341" modified="D:20200403070858"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -268,8 +268,9 @@ h
 <layer name="mercedes-bichrome"/>
 <layer name="mercedes-portals"/>
 <layer name="mercedes-skeleton"/>
-<view layers="edges outer-cycle trees monochrome bichrome portals sperner dual-paths" active="portals"/>
-<view layers="mercedes-skeleton" active="mercedes-skeleton"/>
+<layer name="p-labels"/>
+<view layers="edges outer-cycle trees monochrome bichrome portals sperner dual-paths p-labels" active="portals"/>
+<view layers="mercedes-skeleton p-labels" active="mercedes-skeleton"/>
 <view layers="edges sperner mercedes mercedes-monochrome mercedes-dead mercedes-sperners mercedes-bichrome mercedes-portals" active="mercedes-bichrome"/>
 <path layer="mercedes-bichrome" fill="lightyellow">
 197.218 529.03 m
@@ -1575,10 +1576,10 @@ h
 h
 </path>
 <use layer="mercedes" name="mark/disk(sx)" pos="137.57 594.248" size="large" stroke="blue"/>
-<text layer="portals" matrix="1 0 0 1 7.2499 -7.52629" transformations="translations" pos="224 688" stroke="red" type="label" width="10.866" height="6.812" depth="1.49" halign="center" valign="baseline" style="math">P_1</text>
+<text layer="p-labels" matrix="1 0 0 1 7.2499 -7.52629" transformations="translations" pos="224 688" stroke="red" type="label" width="10.866" height="6.812" depth="1.49" halign="center" valign="baseline" style="math">P_1</text>
 <text matrix="1 0 0 1 11.638 3.43416" transformations="translations" pos="110.295 555.595" stroke="blue" type="label" width="10.866" height="6.812" depth="1.49" halign="right" valign="top" style="math">P_2</text>
 <text matrix="1 0 0 1 -6.67754 8.58541" transformations="translations" pos="325.885 518.392" stroke="darkgreen" type="label" width="10.866" height="6.812" depth="1.49" valign="top" style="math">P_3</text>
-<text transformations="translations" pos="121.361 623.324" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">e_1</text>
+<text layer="portals" transformations="translations" pos="121.361 623.324" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">e_1</text>
 <text matrix="1 0 0 1 5.34203 2.48023" transformations="translations" pos="178.406 509.043" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="top" style="math">e_2</text>
 <text matrix="1 0 0 1 -5.53282 -0.190787" transformations="translations" pos="344.009 639.732" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" valign="baseline" style="math">e_3</text>
 <path layer="mercedes-skeleton" stroke="black" pen="ultrafat">
@@ -1732,10 +1733,9 @@ h
 <text transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_3</text>
 <text matrix="1 0 0 1 -23.481 -73.1624" transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_1</text>
 <text matrix="1 0 0 1 86.2625 -49.5576" transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_2</text>
-<text matrix="1 0 0 1 2.56887 -3.37164" transformations="translations" pos="200.037 596.869" stroke="black" type="label" width="5.694" height="4.289" depth="0" halign="right" valign="baseline" style="math">x</text>
-<text matrix="1 0 0 1 -1.12388 2.72943" transformations="translations" pos="237.446 595.424" stroke="black" type="label" width="5.242" height="4.297" depth="1.93" valign="top" style="math">y</text>
-<text matrix="1 0 0 1 3.21109 3.85331" transformations="translations" pos="220.427 568.932" stroke="black" type="label" width="5.071" height="4.289" depth="0" halign="right" valign="top" style="math">z</text>
-<text matrix="1 0 0 1 -4.17442 -0.642218" transformations="translations" pos="297.333 671.206" stroke="black" type="label" width="11.508" height="4.297" depth="1.93" valign="baseline" style="math">y_F</text>
+<text matrix="1 0 0 1 2.56887 -3.37164" transformations="translations" pos="200.037 596.869" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_2</text>
+<text matrix="1 0 0 1 -1.12388 2.72943" transformations="translations" pos="237.446 595.424" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" valign="top" style="math">x_1</text>
+<text matrix="1 0 0 1 3.21109 3.85331" transformations="translations" pos="220.427 568.932" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" halign="right" valign="top" style="math">x_3</text>
 <text matrix="1 0 0 1 -3.21109 -1.7661" transformations="translations" pos="209.188 517.876" stroke="black" type="label" width="11.256" height="4.294" depth="1.49" valign="baseline" style="math">z_F</text>
 <text matrix="1 0 0 1 1.28444 1.60555" transformations="translations" pos="114.622 608.589" stroke="black" type="label" width="12.317" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_F</text>
 </page>
