@@ -148,15 +148,21 @@ The face $Q_1$ is a cycle in $G$.  The vertices of $Q_1$ are contained in $V(P_2
 
 The recursive invocations on $Q_2$ and $Q_3$ are done similarly, but rotating the values $1,2,3$.  After these three recursive invocations, every vertex in $N-V(F)$ is included in some part of $P$, so the recursive invocation is complete.  Dujmović et al then show that the constraction $H:=G/\mathcal{P}$ has treewidth at most 8, so there is no need to repeat that here.  Instead we discuss the running time of this algorithm.
 
-Let $f$ be the number of inner faces in the near-triangulation $N$.  By having each vertex of $G$ store a pointer to its parent in $T$ and storing $G$ using a representation that simultaneously represents $G$ and its dual graph $G^*$, the colouring of the vertices of $N$ can be done in $O(f)$ time and then the triangular faces of $N$ can be traversed in $O(f)$ time to find the trichromatic triangle $\tau$. The rest of the work (adding $Z_1$, $Z_2$, and $Z_3$ to $P$) is also easily done in $O(f)$ time, so the running time of the algorithm is given by the recurrence
+Let $f$ be the number of inner faces in the near-triangulation $N$.  By having each vertex of $G$ store a pointer to its parent in $T$ and storing $G$ using a representation that simultaneously represents $G$ and its dual graph $G^*$, the colouring of the vertices of $N$ can be done in $O(f)$ time and then the triangular faces of $N$ can be traversed in $O(f)$ time to find the trichromatic triangle $\tau$. The rest of the work (adding $Z_1$, $Z_2$, and $Z_3$ to $P$ and preparing the recursive invocations on $Q_1$, $Q_2$, and $Q_3$) is also easily implemented in $O(f)$ time, so the running time of the algorithm is given by the recurrence
 \[  T(f) \le \begin{cases}
-           a & \text{for $f\in\{0,1\}$} \\
+           a & \text{for $f=1$} \\
            a\cdot f + T(f_1)+T(f_2)+T(f_3) & \text{for $f\ge 2$}
          \end{cases}
  \]
 where $a$ is a sufficiently large constant and, for each $i\in\{1,\ldots,3\}$, $f_i$ is the number of faces of $G$ contained in the interior of $Q_i$.
-Note that $f_1+f_2+f_3=f-1$ (since $\tau$ is not contained in $Q_1$, $Q_2$, or $Q_3$).  An easy inductive proof shows that $T(f) \le an(n+1)/2 = O(f^2)$
+Note that $f_1+f_2+f_3=f-1$ (since $\tau$ is not contained in $Q_1$, $Q_2$, or $Q_3$).  An easy inductive proof shows that $T(f) \le an(n+1)/2 = O(f^2)$.  The
 
+To obtain a faster algorithm we will create an algorithm (part of) whose running time satisifies
+\[  T(f) \le \begin{cases}
+           a & \text{for $f=1$} \\
+           a\cdot \min\{f_1,f_2,f_3\} + T(f_1)+T(f_2)+T(f_3) & \text{for $f\ge 2$}
+         \end{cases}
+ \]
 
 
 
