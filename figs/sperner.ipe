@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70212" creator="Ipe 7.2.13">
-<info created="D:20200402142341" modified="D:20200403073528"/>
+<info created="D:20200402142341" modified="D:20200403075615"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -1736,7 +1736,9 @@ h
 <text matrix="1 0 0 1 2.56887 -3.37164" transformations="translations" pos="200.037 596.869" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_2</text>
 <text matrix="1 0 0 1 -1.12388 2.72943" transformations="translations" pos="237.446 595.424" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" valign="top" style="math">x_1</text>
 <text matrix="1 0 0 1 3.21109 3.85331" transformations="translations" pos="220.427 568.932" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" halign="right" valign="top" style="math">x_3</text>
-<text matrix="1 0 0 1 -3.21109 -1.7661" transformations="translations" pos="209.188 517.876" stroke="black" type="label" width="11.256" height="4.294" depth="1.49" valign="baseline" style="math">z_F</text>
 <text matrix="1 0 0 1 1.28444 1.60555" transformations="translations" pos="114.622 608.589" stroke="black" type="label" width="12.317" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_F</text>
+<text matrix="1 0 0 1 5.34203 2.48023" transformations="translations" pos="178.406 509.043" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="top" style="math">e_1</text>
+<text matrix="1 0 0 1 0.481664 5.61941" transformations="translations" pos="127.734 594.486" stroke="black" type="label" width="9.108" height="7.493" depth="2.47" valign="bottom" style="math">e_3&apos;</text>
+<text matrix="1 0 0 1 -7.86717 -5.94052" transformations="translations" pos="208.974 525.287" stroke="black" type="label" width="9.108" height="7.493" depth="2.47" valign="baseline" style="math">e_2&apos;</text>
 </page>
 </ipe>
