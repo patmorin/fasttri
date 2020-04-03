@@ -59,12 +59,22 @@
 
 \section{Introduction}
 
+\begin{thm}\thmlabel{main}
+  For any $n$-vertex planar graph $G$, there exists a graph $H$ of treewidth at most 8 and a path $P$ such that $G$ is a subgraph of $G^+:=H\boxtimes P$.
+
+  Furthermore, there exists an algorithm that, given $G$ as input, runs in $O(n\log^2 n)$ time and produces the graph $H$, the path $P$, and injective functions $\nu:V(G)\to V(G^+)$ and $\epsilon:E(G)\to E(G^+)$ such that, for each edge $xy\in E(G)$,  $\nu(x)\nu(y)\in E(G^+)$.
+\end{thm}
+
+
+
 \section{Preliminaries}
+
+
 
 Our algorithm makes use of a data structure that preprocesses a rooted $n$-vertex tree $T$ whose vertices are all initially uncoloured and supports the following operations:
 \begin{enumerate}
   \item $\textsc{Colour}(v,c)$: Set the colour of the node $v$ of $T$ to some integer value $c$.  A precondition of this operation is that $v$ should have no coloured strict $T$-descendant or $v$ should have been coloured by a previous call to $\textsc{Colour}(v,c)$.
-  
+
   \item $\textsc{FirstColour}(w)$: Return the colour of the first coloured node on the path from node $w$ to the root of $T$, or return $\perp$ if all nodes on the path from $w$ to the root of $T$ are still uncoloured.
 \end{enumerate}
 
@@ -78,8 +88,8 @@ The proof of the following lemma uses fairly standard techniques from the field 
     We decompose $T$ in a sequence $F_0,\ldots,F_r$ of forests, where $F_0:=T$ and, for each $i\in\{1,\ldots,r\}$, $F_i$ is a spanning subgraph of $F_{i-1}$ and each tree in $F_i$ has size at most $\lceil n/2^i\rceil$.
 
     To obtain the forest $F_i$ we take each tree $T'$ in $F_{i-1}$
-    a find a node $v$ of $T'$ that has at least $|T'|/2$ $T'$-descendants and such that each child of $v$ has at most $|T'|/2$ $T'$-descendants.  We then remove the edges between $v$ and its children in $T'$.  Doing this for every tree $T'$ in $F_{i-1}$ gives the (refined) forest $F_i$.  This process ends after at most $r:=\lceil\log_2 n\rceil$ iterations, at which point $F_r$ has no edges.  
-    
+    a find a node $v$ of $T'$ that has at least $|T'|/2$ $T'$-descendants and such that each child of $v$ has at most $|T'|/2$ $T'$-descendants.  We then remove the edges between $v$ and its children in $T'$.  Doing this for every tree $T'$ in $F_{i-1}$ gives the (refined) forest $F_i$.  This process ends after at most $r:=\lceil\log_2 n\rceil$ iterations, at which point $F_r$ has no edges.
+
     For each node $x$ of $T$ we store a list of $r+1$ pointers $p_{x,0},\ldots,p_{x,r}$ where $p_{x,i}$ is a pointer to the root of the tree $T_{i,x}$ in $F_i$ that contains $x$.  For each $i\in\{0,\ldots,r\}$, and each tree $T_{i,j}$ in the forest $F_i$ with $|T_{i,j}\ge 2|$, the root of $T_{i,j}$ stores a pointer to the node $v$ that is used to split $T$ into $2$ or more trees in $F_{i+1}$.
 
     Each node $x$ of $T$ stores two values:
@@ -93,7 +103,7 @@ The proof of the following lemma uses fairly standard techniques from the field 
     \item $\textsc{FirstColour}(x)$:  If $c_x$ is defined, then return $c_x$.   Otherwise, if $i_x$ is not defined, then return $-1$ since the path from $x$ to the root of $T=F_0$ contains no coloured edge.  Otherwise, $i_x$ is defined, so consider the tree $T_{i,x}$ in the forest $F_{i_x}$ that contains $x$.  (The root of $T_{i,x}$ can be accessed with $p_{x,i}$.)  Since $i_x=i$ and $c_x$ is undefined, $|T_{i,x}|\ge 2$.  Therefore, there is a node $v$ of $T_{i,x}$ that was used to split $T_{i,x}$ into two or more trees in $F_{i+1}$.  One of these trees, $T_{i+1,x}$, contains $x$.  No node on the path from $x$ to the root of $T_{i+1,x}$ is coloured, therefore, $v$ must be a $T$-ancestor of $x$ and some edge on the path from $v$ to the root of $T_{i,x}$ is coloured.  Therefore, $i_v\ge i+1$ and we can continue to find $\textsc{FirstColour}(v)$.  This process clearly terminates after at most $r=\lceil\log_2 n\rceil$ rounds and therefore this algorithm runs in $O(\log n)$ time.
 
     \item $\textsc{Colour}(v,c)$. If $v$ has previously been coloured by a call to $\textsc{Colour}(v,c)$, then there is nothing to do but set $c_v:=c$.  Otherwise, we also set $c_v:=c$ and let $i\in\{0,\ldots,r\}$ be the minimum value such that $v$ is the root of the tree $T_{i,v}$ in $F_i$ that contains $v$.  (The value of $i$ can be found by scanning $p_{v,0},\ldots,p_{v,r}$ for the first $i$ such that $p_{v,i}=v$.)   Since no $T$-descendant of $v$ (including $v$) has been coloured before, $i_w < i$ for each $T$-descendant $w$ of $v$.  We therefore traverse the entire subtree rooted at $v$ and set $i_w:=i$ for each $T$-descendant $w$ of $v$.
-    
+
     Now, observe that each time $i_w$ is modified for some node $w$ of $T$, it is increased.  It follows that $i_w$ is modified at most $r+2=O(\log n)$ times.  This implies the $O(n\log n)$ upper bound on the running-time of all $\textsc{Colour}(v,c)$. \qedhere
   \end{enumerate}
 \end{proof}
@@ -101,17 +111,20 @@ The proof of the following lemma uses fairly standard techniques from the field 
 
 \section{The Algorithm}
 
-The proof of existence of Dujmović et al \cite{dujmovic.joret.ea:planar} is inductive and leads to a natural recursive algorithm.  The algorithm is initialized with a bread-first-search tree $T$ of the triangulation $G$ and each recursive invocation is given as input a cycle $F$ in $G$. The subgraph of $G$ induced by the vertices of $F$ and the vertices in the interior of $F$ is a near-triangulation, $N$, that does not include the root of $T$.  The cycle $F$ has three special edges whose removal separates $F$ into three non-empty paths $P_1$, $P_2$, and $P_3$.
+A \emph{breadth-first-search tree} of a connected graph $G$ is a rooted spanning tree of $G$ with the property that the path, in $T$, from the root $r$ of $T$ to each vertex $x\in V(G)$ has the same length as a shortest path from $r$ to $x$ in $G$.\footnote{The \emph{length} of a path is equal to the number of edges in the path, which is one less than the number of vertices in the path.}  Dujmović et al \cite{dujmovic.joret.ea:planar} prove (the first part of) \thmref{main} by first adding edges to $G$ to complete it to a triangulation and then proving the following result, which easily implies \thmref{main}.
 
-The paths $P_1$, $P_2$, and $P_3$ along, with the breadth-first search tree $T$ partition the vertices of $N$ into three colour classes.  Each vertex $v\in P_i$ has colour $c(v)=i$.  For each vertex $v\in V(N)\setminus V(F)$, the path from $v$ to the root of $T$ must contain some first vertex $v_F$ of $F$.  The vertex $v$ is assigned to class $c(v)=c(v_F)$.  The conditions imply, by Sperner's Lemmma \cite{X} that $N$ contains a triangular face $\tau=xyz$ that it \emph{trichromatic}, i.e., $c(x)$, $c(v)$, and $c(y)$ are all distinct.  (Note that $0$, $1$, $2$, or $3$ vertices of $\tau$ may be in $V(F)$)  The edges of $F$, $\tau$, and the paths in $T$, $x\rightsquigarrow x_F$, $y\rightsquigarrow y_F$ and $z\rightsquigarrow z_F$ define a graph with at most 4 interior faces, one of which is $\tau$, the others are $Q_1,\ldots,Q_a$ for $a\in\{0,\ldots,3\}$.  For each of the other interior faces, $Q_i$, $V(F)\cap V(Q_i)$ is contained in $V(P_i)\cup V(P_j)$ for some pair $i,j$.  In particular, if $Q$ contains, for example $x$ and $y$, then $V(Q)\cap V(P_{c(z)})=\emptyset$.  
+\begin{thm}\thmlabel{triangulation-partition}
+  For any $n$-vertex triangulation $T$ and any breadth-first-spanning tree $T$ of $G$, there exists a partition $\mathcal{P}$ of $V(G)$ such that each $P\in\mathcal{P}$ is a vertical path in $T$ and the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
+\end{thm}
 
-The algorithm then recurses on each 
+We will focus on giving a fast algorithm for \thmref{triangulation-partition}, from which we immediately obtain (the second part of) \thmref{main}.  We begin by describing the proof of Dujmović et al \cite{dujmovic.joret.ea:planar}, which is inductive, and leads to a natural recursive algorithm.
 
-The vertices in $V(Q)\setminus V(F)$ are containe in $ vertics of $Q$ are those in  
+Refer to \figref{tripod}. The algorithm is initialized with a breadth-first-search tree $T$ of the triangulation $G$.  Each recursive invocation of the algorithm is given as input:
+\begin{compactenum}
+  \item A cycle $F$ in $G$. The subgraph of $G$ induced by the vertices of $F$ and the vertices in the interior of $F$ is a near-triangulation, $N$, that does not include the root of $T$.  Prior to this recursive invocation, every vertex of $F$ is already included in some part of the partition $\mathcal{P}$ and no vertex in $N-V(F)$ is included in any part of $\mathcal{P}$.
 
-
-
-the root of $T$ is  with the root of $T$ in its exterior and with the property that each path, in, $T$ from a vertex 
+  \item Three edges $e_1$, $e_2$, and $e_3$ of $F$ that we will call \emph{portals}.  Removing $e_1$, $e_2$ and $e_3$ from $F$ splits $F$ into three non-empty paths $P_1$, $P_2$, and $P_3$ where, for each $i\in\{1,\ldots,3\}$, neither endpoint of $e_i$ is included in $P_i$.
+\end{compactenum}
 
 \begin{figure}
   \begin{center}
@@ -120,7 +133,34 @@ the root of $T$ is  with the root of $T$ in its exterior and with the property t
     \includegraphics{figs/sperner-explode-2}
   \end{center}
   \caption{The main step in the algorithm: Finding a Sperner triangle in $O(k)$ steps.}
+  \figlabel{tripod}
 \end{figure}
+
+By the time the recursive invocation terminates, each vertex of $N-V(F)$ is included in some part of the partition $\mathcal{P}$.  The base case occurs when $N$ consists of a single triangle ($F$), in which case there is nothing to do so the alogorithm returns immediately.
+
+Otherwise, the paths $P_1$, $P_2$, and $P_3$, along with the breadth-first search tree $T$ partition the vertices of $N$ into three colour classes, as follows.  Each vertex $v\in P_i$ has colour $c(v)=i$.  For each vertex $v\in V(N)\setminus V(F)$, the path from $v$ to the root of $T$ must contain some first vertex $v_F$ of $F$.  The vertex $v$ is assigned to class $c(v)=c(v_F)$.
+
+By Sperner's Lemmma \cite{X}, $N$ contains a triangular face $\tau=x_1x_2x_3$ that it \emph{trichromatic}, i.e., $c(x_i)=i$ for each $i\in\{1,\ldots,3\}$. (Note that $0$, $1$, $2$, or $3$ vertices of $\tau$ may be in $V(F)$.)  The edges of $F$, $\tau$, and the paths in $T$ from each $x_i$ to the first vertex of $P_i$ define a graph with at most 4 interior faces, one of which is $\tau$, the others are $Q_1,Q_2,Q_3$, where $Q_i$ is a face that does not contain $x_i$, for each $i\in\{1,2,3\}$.  Note that, for each $i\in\{1,2,3\}$, $Q_i$ contains no vertex of $P_i$.
+
+For each $i\in\{1,2,3\}$, let $Z_i$ be the path, in $T$, from $x_i$ up to, but not including the first vertex in $P_i$.  Note that $Z_i$ may be empty, which occurs when $x_i$ is a vertex of $P_i$.  The algorithm adds $V(Z_1)$, $V(Z_2)$ and $V(Z_3)$ to the partition $\mathcal{P}$ and then recurses on each of $Q_1$, $Q_2$, and $Q_3$.  We now how describe this is done.
+
+The face $Q_1$ is a cycle in $G$.  The vertices of $Q_1$ are contained in $V(P_2)\cup V(P_3)\cup (V(Z_2)\cup V(Z_3))$.  Therefore every vertex of $Q_1$ is contained in some part of $G$, so $Q_1$ satisfies the requirements for the cycle $F$ in a recursive invocation.  The cycle $Q_1$ contains at least one vertex each from $V(P_2)$ and $V(P_3)$ and therefore also contains the portal $e_1$, which is also used as one of the three portals in the recursive invocation.  If $(V(Z_2)\cup V(Z_3))$ is non-empty, then $Q_1$ contains two edges $e_2'$ and $e_3'$ where $e_2'$ has an endpoint in $V(P_3)$ and an endpoint in $(V(Z_2)\cup V(Z_3))$ and where $e_3'$ has an endpoint in $V(P_2)$ and an endpoint in $(V(Z_2)\cup V(Z_3))$.  In this case, the edges $e_1$, $e_2'$, and $e_3'$ are used as the three portal in the recursive invocation on $Q_1$.  If $(V(Z_2)\cup V(Z_3))$ is empty, because $x_2\in V(P_2)$ and $x_3\in V(P_3)$, then we artifically create two portals $e_2'$ and $e_3'$ for the recursive invocation by taking any two edges of $Q_1$ other than $e_1$.
+
+The recursive invocations on $Q_2$ and $Q_3$ are done similarly, but rotating the values $1,2,3$.  After these three recursive invocations, every vertex in $N-V(F)$ is included in some part of $P$, so the recursive invocation is complete.  Dujmović et al then show that the constraction $H:=G/\mathcal{P}$ has treewidth at most 8, so there is no need to repeat that here.  Instead we discuss the running time of this algorithm.
+
+Let $f$ be the number of inner faces in the near-triangulation $N$.  By having each vertex of $G$ store a pointer to its parent in $T$ and storing $G$ using a representation that simultaneously represents $G$ and its dual graph $G^*$, the colouring of the vertices of $N$ can be done in $O(f)$ time and then the triangular faces of $N$ can be traversed in $O(f)$ time to find the trichromatic triangle $\tau$. The rest of the work (adding $Z_1$, $Z_2$, and $Z_3$ to $P$) is also easily done in $O(f)$ time, so the running time of the algorithm is given by the recurrence
+\[  T(f) \le \begin{cases}
+           a & \text{for $f\in\{0,1\}$} \\
+           a\cdot f + T(f_1)+T(f_2)+T(f_3) & \text{for $f\ge 2$}
+         \end{cases}
+ \]
+where $a$ is a sufficiently large constant and, for each $i\in\{1,\ldots,3\}$, $f_i$ is the number of faces of $G$ contained in the interior of $Q_i$.
+Note that $f_1+f_2+f_3=f-1$ (since $\tau$ is not contained in $Q_1$, $Q_2$, or $Q_3$).  An easy inductive proof shows that $T(f) \le an(n+1)/2 = O(f^2)$
+
+
+
+
+
 
 
 \end{document}
