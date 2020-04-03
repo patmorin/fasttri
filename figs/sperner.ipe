@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70212" creator="Ipe 7.2.13">
-<info created="D:20200402142341" modified="D:20200403070858"/>
+<info created="D:20200402142341" modified="D:20200403073528"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -1579,9 +1579,9 @@ h
 <text layer="p-labels" matrix="1 0 0 1 7.2499 -7.52629" transformations="translations" pos="224 688" stroke="red" type="label" width="10.866" height="6.812" depth="1.49" halign="center" valign="baseline" style="math">P_1</text>
 <text matrix="1 0 0 1 11.638 3.43416" transformations="translations" pos="110.295 555.595" stroke="blue" type="label" width="10.866" height="6.812" depth="1.49" halign="right" valign="top" style="math">P_2</text>
 <text matrix="1 0 0 1 -6.67754 8.58541" transformations="translations" pos="325.885 518.392" stroke="darkgreen" type="label" width="10.866" height="6.812" depth="1.49" valign="top" style="math">P_3</text>
-<text layer="portals" transformations="translations" pos="121.361 623.324" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">e_1</text>
-<text matrix="1 0 0 1 5.34203 2.48023" transformations="translations" pos="178.406 509.043" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="top" style="math">e_2</text>
-<text matrix="1 0 0 1 -5.53282 -0.190787" transformations="translations" pos="344.009 639.732" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" valign="baseline" style="math">e_3</text>
+<text layer="portals" transformations="translations" pos="121.361 623.324" stroke="darkgreen" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">e_3</text>
+<text matrix="1 0 0 1 5.34203 2.48023" transformations="translations" pos="178.406 509.043" stroke="red" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="top" style="math">e_1</text>
+<text matrix="1 0 0 1 -5.53282 -0.190787" transformations="translations" pos="344.009 639.732" stroke="blue" type="label" width="9.108" height="4.294" depth="1.49" valign="baseline" style="math">e_2</text>
 <path layer="mercedes-skeleton" stroke="black" pen="ultrafat">
 204.645 589.142 m
 227.39 574.752 l
