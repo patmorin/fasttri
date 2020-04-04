@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70212" creator="Ipe 7.2.13">
-<info created="D:20200402142341" modified="D:20200403160837"/>
+<info created="D:20200402142341" modified="D:20200404104718"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -269,10 +269,46 @@ h
 <layer name="mercedes-portals"/>
 <layer name="mercedes-skeleton"/>
 <layer name="p-labels"/>
+<layer name="dual-paths-faces"/>
+<layer name="mercedes-skeleton-labels"/>
 <view layers="edges outer-cycle trees monochrome bichrome portals sperner p-labels" active="portals"/>
-<view layers="mercedes-skeleton p-labels" active="mercedes-skeleton"/>
+<view layers="mercedes-skeleton p-labels mercedes-skeleton-labels" active="mercedes-skeleton"/>
 <view layers="edges sperner mercedes mercedes-monochrome mercedes-dead mercedes-sperners mercedes-bichrome mercedes-portals" active="mercedes-bichrome"/>
-<view layers="edges trees monochrome bichrome portals sperner dual-paths" active="mercedes-bichrome"/>
+<view layers="edges trees monochrome bichrome portals sperner dual-paths" active="dual-paths"/>
+<view layers="portals dual-paths mercedes-skeleton dual-paths-faces" active="dual-paths-faces"/>
+<path layer="dual-paths-faces" stroke="black" fill="gray">
+164.655 524.92 m
+203.842 511.261 l
+197.218 529.03 l
+205.109 556.417 l
+227.39 574.752 l
+204.645 589.142 l
+177.722 569.414 l
+183.06 538.546 l
+h
+</path>
+<path stroke="black" fill="gray">
+324.472 647.639 m
+304.444 619.546 l
+264.524 628.829 l
+248.046 615.136 l
+256.633 584.732 l
+292.143 595.64 l
+326.957 606.084 l
+347.518 621.585 l
+h
+</path>
+<path stroke="black" fill="gray">
+135.163 635.359 m
+119.349 606.785 l
+137.57 594.248 l
+173.545 590.07 l
+204.645 589.142 l
+218.57 623.723 l
+180.507 618.385 l
+156.834 611.423 l
+h
+</path>
 <path layer="mercedes-bichrome" fill="lightyellow">
 197.218 529.03 m
 203.842 511.261 l
@@ -1339,6 +1375,7 @@ h
 170.365 607.111 l
 186.144 598.895 l
 199.963 610.473 l
+219.288 603.371 l
 </path>
 <path stroke="black">
 187.552 516.939 m
@@ -1358,6 +1395,7 @@ h
 282.033 618.129 l
 265.32 614.768 l
 264.293 597.401 l
+275.766 581.868 l
 </path>
 <path layer="mercedes" stroke="black" pen="ultrafat" arrow="normal/normal">
 204.645 589.142 m
@@ -1728,16 +1766,78 @@ h
 <use name="mark/disk(sx)" pos="227.39 574.752" size="large" stroke="black"/>
 <use name="mark/disk(sx)" pos="235.513 547.83" size="large" stroke="black"/>
 <use name="mark/disk(sx)" pos="197.218 529.03" size="large" stroke="black"/>
-<text transformations="translations" pos="221.759 585.946" stroke="black" type="label" width="5.483" height="4.289" depth="0" halign="center" valign="center" style="math">\tau</text>
-<text transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_3</text>
-<text matrix="1 0 0 1 -23.481 -73.1624" transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_1</text>
-<text matrix="1 0 0 1 86.2625 -49.5576" transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_2</text>
-<text matrix="1 0 0 1 2.56887 -3.37164" transformations="translations" pos="200.037 596.869" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_2</text>
+<text layer="mercedes-skeleton-labels" transformations="translations" pos="221.759 585.946" stroke="black" type="label" width="5.483" height="4.289" depth="0" halign="center" valign="center" style="math">\tau</text>
+<text layer="mercedes-skeleton" matrix="1 0 0 1 11.1227 0.24717" transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_3</text>
+<text matrix="1 0 0 1 -32.132 -69.3313" transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_1</text>
+<text matrix="1 0 0 1 77.7351 -64.8821" transformations="translations" pos="197.784 633.773" stroke="black" type="label" width="12.345" height="6.815" depth="1.93" halign="center" valign="baseline" style="math">Q_2</text>
+<text layer="mercedes-skeleton-labels" matrix="1 0 0 1 2.56887 -3.37164" transformations="translations" pos="200.037 596.869" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_2</text>
 <text matrix="1 0 0 1 -1.12388 2.72943" transformations="translations" pos="237.446 595.424" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" valign="top" style="math">x_1</text>
 <text matrix="1 0 0 1 3.21109 3.85331" transformations="translations" pos="220.427 568.932" stroke="black" type="label" width="10.163" height="4.294" depth="1.49" halign="right" valign="top" style="math">x_3</text>
-<text matrix="1 0 0 1 1.28444 1.60555" transformations="translations" pos="114.622 608.589" stroke="black" type="label" width="12.317" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_F</text>
+<text layer="mercedes-skeleton" matrix="1 0 0 1 1.28444 1.60555" transformations="translations" pos="114.622 608.589" stroke="black" type="label" width="12.317" height="4.294" depth="1.49" halign="right" valign="baseline" style="math">x_F</text>
 <text matrix="1 0 0 1 5.34203 2.48023" transformations="translations" pos="178.406 509.043" stroke="black" type="label" width="9.108" height="4.294" depth="1.49" halign="right" valign="top" style="math">e_1</text>
 <text matrix="1 0 0 1 0.481664 5.61941" transformations="translations" pos="127.734 594.486" stroke="black" type="label" width="9.108" height="7.493" depth="2.47" valign="bottom" style="math">e_3&apos;</text>
 <text matrix="1 0 0 1 -7.86717 -5.94052" transformations="translations" pos="208.974 525.287" stroke="black" type="label" width="9.108" height="7.493" depth="2.47" valign="baseline" style="math">e_2&apos;</text>
+<path layer="dual-paths-faces" stroke="black" fill="gray">
+173.545 590.07 m
+180.507 618.385 l
+</path>
+<path stroke="black" fill="gray">
+156.834 611.423 m
+173.545 590.07 l
+</path>
+<path stroke="black" fill="gray">
+137.57 594.248 m
+156.834 611.423 l
+</path>
+<path stroke="black" fill="gray">
+119.349 606.785 m
+156.834 611.423 l
+</path>
+<path stroke="black" fill="gray">
+264.524 628.829 m
+292.143 595.64 l
+</path>
+<path stroke="black" fill="gray">
+292.143 595.64 m
+304.444 619.546 l
+</path>
+<path stroke="black" fill="gray">
+304.444 619.546 m
+326.957 606.084 l
+</path>
+<path stroke="black" fill="gray">
+304.444 619.546 m
+347.518 621.585 l
+</path>
+<path stroke="black" fill="gray">
+164.655 524.92 m
+197.218 529.03 l
+</path>
+<path stroke="black" fill="gray">
+197.218 529.03 m
+183.06 538.546 l
+</path>
+<path stroke="black" fill="gray">
+183.06 538.546 m
+205.109 556.417 l
+</path>
+<path stroke="black" fill="gray">
+205.109 556.417 m
+177.722 569.414 l
+</path>
+<path stroke="black" fill="gray">
+204.645 589.142 m
+205.109 556.417 l
+</path>
+<use layer="dual-paths" name="mark/square(sx)" pos="219.288 603.371" size="normal" stroke="black"/>
+<use name="mark/square(sx)" pos="275.766 581.868" size="normal" stroke="black"/>
+<path layer="dual-paths-faces" stroke="black" fill="gray">
+180.507 618.385 m
+204.645 589.142 l
+</path>
+<path stroke="black" fill="gray">
+248.046 615.136 m
+292.143 595.64 l
+</path>
 </page>
 </ipe>
