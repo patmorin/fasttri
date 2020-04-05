@@ -65,7 +65,7 @@ The \emph{strong product} $G_1\boxtimes G_2$ of two graphs $G_1$ and $G_2$ is th
   \item $vw\in E(G_1)$ and $x=y$; or
   \item $vw\in E(G_1)$ and $xy\in E(G_2)$.
 \end{compactitem}
-Dujmović \etal\  \cite{dujmovic.joret.ea:planar} recently proved the following structural result for planar graphs:
+Dujmović \etal\  \cite{dujmovic.joret.ea:planar} recently proved the following \emph{product structure theorem} for planar graphs:
 
 \begin{thm}[Dujmović \etal\ 2019]\thmlabel{product-structure}
   For any $n$-vertex planar graph $G$, there exists a graph $H$ of treewidth at most 8 and a path $P$ such that $G$ is a subgraph of $G^+:=H\boxtimes P$.
@@ -75,11 +75,12 @@ Though still very new, \thmref{product-structure} has been used to solve a numbe
 \begin{itemize}
   \item \thmref{product-structure} has been used to show that the queue-number of every planar graph is upper bounded by a constant.  This solves an open problem of Heath, Leighton, and Rosenberg posed in 1992 \cite{heath.leighton.ea:comparing}.
   \item \thmref{product-structure} has been used to show that the nonrepetitive chromatic number of every planar graph is upper bounded by a constant. This solves an open problem of Alon \etal\  \cite{alon.grytczuk.ea:nonrepetitive} posed in 2002.
-  \item \thmref{product-structure} has been used to make dramatic improvements on the best-known bounds for $p$-centered colourings of planar graphs \cite{debski.felsner.ea:improved}.
   \item \thmref{product-structure} has been used to produce (asymptotically) optimal labelling schemes for planar graphs \cite{dujmovic.esperet.ea:adjacency}.  This (asympotically) resolves a problem of Kannan, Naor, and Rudich posed in 1988 \cite{kannan.naor.ea:implicit-stoc,kannan.naor.ea:implicit}.
+  \item \thmref{product-structure} has been used to make significant improvements on the best-known bounds for $p$-centered colourings of planar graphs \cite{debski.felsner.ea:improved}.  This gives the strongest result thus far on a question motivated by the work of Nešetřil and Ossona de Mendez from 2006 \cite{nesetril.ossona:tree,nesetril.ossona:grad} and posed explicity by Dvořák in 2016 \cite{dvorak:question}.
 \end{itemize}
 
-The proof of \thmref{main} in given by Dujmović \etal\ is constructive and leads easily to an $O(n^2)$ algorithm for finding the decomposition described in \thmref{product-structure} \cite[Section~10]{dujmovic.joret.ea:planar}. Given the number of applications of \thmref{product-structure} (and that more are likely to be found), it is natural to ask if this can be improved.  In this paper, we provide a faster algorithmic version of \thmref{product-structure}:
+The proof given by Dujmović \etal\  is based on a similar decomposition of Pilipczuk and Siebertz \cite{pilipczuk.siebertz:polynomial-soda} which is constructive and leads to an $O(n^2)$ time algorithm for finding $H$ and the mapping from $V(G)$ onto $V(H\boxtimes P)$.
+\cite[Section~10]{dujmovic.joret.ea:planar}. Given the number of applications of \thmref{product-structure} (and that more are likely to be found), it is natural to ask if this can be improved.  In this paper, we provide a faster algorithmic version of \thmref{product-structure}:
 
 \begin{thm}\thmlabel{main}
   For any $n$-vertex planar graph $G$, there exists a graph $H$ of treewidth at most 8 and a path $P$ such that $G$ is a subgraph of $G^+:=H\boxtimes P$.
@@ -257,6 +258,19 @@ All that remains is to describe the required data structure.
 
 \section{Discussion}
 \seclabel{discussion}
+
+\thmref{product-structure} has been generalized to a number of graph classes including bounded-genus graphs \cite{dujmovic.joret.ea:planar}, apex-minor free graphs \cite{dujmovic.joret.ea:planar}, graphs of bounded-degree from proper-minor closed families \cite{dujmovic.esperet.ea:planar}, and $k$-planar graphs \cite{dujmovic.morin.ea:structure}.  In all cases, these generalizations ultimately reduce to planar graphs by decomposing the input graphs into a number of planar graphs and applying \thmref{product-structure} to each of these planar graphs.
+
+In at least two cases, the extra work done in these generalizations can be done in $O(n)$ time.  Combined with \thmref{main}, this gives $O(n\log n)$ time algorithms for computing the corresponding decomposition.
+\begin{enumerate}
+  \item For graphs $G$ of fixed Euler genus $g$, the result of Dujmović \etal\ \cite{dujmovic.joret.ea:planar} only requires finding a genus-$g$ embedding of $G$ computing a breadth-first spanning tree $T$ of $G$ and computing any spanning-tree $D$ of the dual graph that does not cross edges of $T$.  The two spanning trees $T$ and $D$ can be computed in $O(n)$ time using standard algorithms.  The genus-$g$ embedding of $G$ can be computed in $O(n)$ time using an algorithm of Mohar \cite{mohar:linear}
+
+  \item Given a $k$-plane embedding of a $k$-planar graph $G$, the result of Dujmović, Morin, and Wood \cite{dujmovic.morin.ea:structure} applies \thmref{product-structure} directly to the planar graph obtained by adding a dummy vertex at every point where a pair of edges crosses.
+
+  While the problem of testing $k$-planarity of a graph is NP-complete, even for $k=1$, there are a number of graph classes that are $k$-planar and in which an embedding can be found easily.  These include (appropriate representations of) map graphs, bounded-degree string graphs, powers of bounded-degree planar graphs, and $k$-nearest-neighbour graphs of points in $\R^2$ \cite[Section~8]{dujmovic.morin.ea:structure}.
+\end{enumerate}
+
+The obvious open problem left by our work is that of finding a faster algorithm.  Can the running-time in \thmref{main} be improved to $O(n)$?
 
 
 \bibliographystyle{plainurl}
