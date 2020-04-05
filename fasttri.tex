@@ -80,12 +80,12 @@ Though still very new, \thmref{product-structure} has been used to solve a numbe
 \end{itemize}
 
 The proof given by Dujmović \etal\  is based on a similar decomposition of Pilipczuk and Siebertz \cite{pilipczuk.siebertz:polynomial-soda} which is constructive and leads to an $O(n^2)$ time algorithm for finding $H$ and the mapping from $V(G)$ onto $V(H\boxtimes P)$.
-\cite[Section~10]{dujmovic.joret.ea:planar}. Given the number of applications of \thmref{product-structure} (and that more are likely to be found), it is natural to ask if this can be improved.  In this paper, we provide a faster algorithmic version of \thmref{product-structure}:
+\cite[Section~10]{dujmovic.joret.ea:planar}. Given the number of applications of \thmref{product-structure} (and that more are likely to be found), it is natural to ask if this running-time can be improved.  In this paper, we provide a faster algorithmic version of \thmref{product-structure}:
 
 \begin{thm}\thmlabel{main}
   For any $n$-vertex planar graph $G$, there exists a graph $H$ of treewidth at most 8 and a path $P$ such that $G$ is a subgraph of $G^+:=H\boxtimes P$.
 
-  Furthermore, there exists an algorithm that, given $G$ as input, runs in $O(n\log^2 n)$ time and produces the graph $H$, the path $P$, and injective functions $\nu:V(G)\to V(G^+)$ and $\epsilon:E(G)\to E(G^+)$ such that, for each edge $xy\in E(G)$,  $\epsilon(x)\epsilon(y)\in E(G^+)$.
+  Furthermore, there exists an algorithm that, given $G$ as input, runs in $O(n\log^2 n)$ time and produces the graph $H$, the path $P$, and an injective function $\varphi:V(G)\to V(G^+)$ such that, for each edge $vw\in E(G)$,  $\varphi(v)\varphi(w)\in E(G^+)$.
 \end{thm}
 
 The remainder of this paper is organized as follows. \Secref{original} reviews the proof of \thmref{product-structure} and the resulting $O(n^2)$ time algorithm.  \Secref{faster} describes the $O(n\log^2 n)$ time algorithm.  \Secref{discussion} discusses some of the implications and applications of this work.
@@ -94,7 +94,7 @@ The remainder of this paper is organized as follows. \Secref{original} reviews t
 \section{The Original Proof/Algorithm}
 \seclabel{original}
 
-Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  Every graph $G$ is finite, simple, and unidirected, and has vertex set denoted $V(G)$ and edge set denoted $E(G)$. We use the shorthand $|G|:=|V(G)|$ to denote the number of vertices of $G$.
+Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  Every graph $G$ that we consider is finite, simple, and undirected, and has vertex set denoted $V(G)$ and edge set denoted $E(G)$. We use the shorthand $|G|:=|V(G)|$ to denote the number of vertices of $G$.
 
 Let $T$ be a tree rooted at some node $r$ and, for each node $v$ of $T$, let $P_T(v)$ denote the path in $T$ from $v$ to $r$.  The \emph{$T$-depth} of a node $v$ in $T$ is the length of $P_T(v)$.\footnote{The \emph{length} of a path is equal to the number of edges in the path, which is one less than the number of vertices in the path.}  A path $P$ in $T$ is a \emph{vertical path} if no two nodes of $P$ have the same $T$-depth.  Every node $w$ in $P_T(v)$ is a \emph{$T$-ancestor} of $v$ and $v$ is a \emph{$T$-descendant} of every node $w$ in $P_T(v)$.  Note that $v$ is both a $T$-ancestor and $T$-descendant of itself.  A $T$-ancestor or $T$-descendant $x$ of $v$ is \emph{strict} if $x\neq v$.
 
@@ -104,7 +104,7 @@ For a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient grap
   For any $n$-vertex triangulation $T$ and any spanning tree $T$ of $G$, there exists a partition $\mathcal{P}$ of $V(G)$ such that each $P\in\mathcal{P}$ is a vertical path in $T$ and the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
 \end{thm}
 
-Deriving \thmref{product-structure} from \thmref{triangulation-partition} is just a matter of checking definitions.  The graph $H$ in \thmref{product-structure} is the same graph $H$ in \thmref{triangulation-partition}. The path $P$ in \thmref{product-structure} is simply the path $0,1,2,\ldots,h$ where $h$ is the maximum depth of any node in $T$.  Each vertex $v\in V(G)$ maps to the node $\nu(v):=(X,y)$ where $X$ is the set in $\mathcal{P}$ that contains $v$ and $y$ is the depth of $v$ in $T$.  It is straightforward to check (using the definition of $\boxtimes$ and the fact that $T$ is a breadth-first search tree) that for any  edge $vw\in E(G)$, $\nu(v)\nu(w)\in E(H\boxtimes P)$.
+Deriving \thmref{product-structure} from \thmref{triangulation-partition} is just a matter of checking definitions.  The graph $H$ in \thmref{product-structure} is the same graph $H$ in \thmref{triangulation-partition}. The path $P$ in \thmref{product-structure} is simply the path $0,1,2,\ldots,h$ where $h$ is the maximum depth of any node in $T$.  Each vertex $v\in V(G)$ maps to the node $\varphi(v):=(X,y)$ where $X$ is the set in $\mathcal{P}$ that contains $v$ and $y$ is the depth of $v$ in $T$.  It is straightforward to check (using the definition of $\boxtimes$ and the fact that $T$ is a breadth-first search tree) that for any  edge $vw\in E(G)$, $\varphi(v)\varphi(w)\in E(H\boxtimes P)$.
 
 Therefore, we will focus on giving a fast algorithm for \thmref{triangulation-partition}, from which we immediately obtain \thmref{main}.  We begin by describing the proof of Dujmović \etal\  \cite{dujmovic.joret.ea:planar}, which is inductive, and leads naturally to a recursive algorithm.  Refer to \figref{tripod}. The algorithm is initialized with a breadth-first-search tree $T$ of the triangulation $G$.  Each recursive invocation of the algorithm is given as input:
 \begin{compactenum}
@@ -114,11 +114,15 @@ Therefore, we will focus on giving a fast algorithm for \thmref{triangulation-pa
   \begin{compactenum}[(P1)]
     \item The root $r$ of $T$ is not in the interior of $F$, i.e., $r\not\in\ V(N)\setminus V(F)$.
     \item For every vertex $v\in V(N)\setminus V(F)$, and every $T$-descendant $w$ of $v$, $w\in V(N)\setminus V(F)$.
-    \item Prior to this recursive invocation, every vertex of $F$ is already included in some part of the partition $\mathcal{P}$ and no vertex in $N-V(F)$ is included in any part of $\mathcal{P}$.
+    \item Prior to this recursive invocation, every vertex of $F$ is already included in some part of the partition $\mathcal{P}$ and no vertex in $V(N)\setminus V(F)$ is included in any part of $\mathcal{P}$.
   \end{compactenum}
   \item Three edges $e_1$, $e_2$, and $e_3$ of $F$ that we will call \emph{portals}.
 
-  Removing $e_1$, $e_2$ and $e_3$ from $F$ splits $F$ into three non-empty paths $P_1$, $P_2$, and $P_3$ where, for each $i\in\{1,\ldots,3\}$, neither endpoint of $e_i$ is included in $P_i$.
+  Removing $e_1$, $e_2$ and $e_3$ from $F$ splits $F$ into three non-empty paths $P_1$, $P_2$, and $P_3$ where, for each $i\in\{1,\ldots,3\}$, neither endpoint of $e_i$ is included in $P_i$.  The portals satisfy the following precondition:
+  \begin{compactenum}[(P1)]\setcounter{enumii}{3}
+    \item For each $i\in\{1,\ldots,3\}$, $V(P_i)$ is contained in the union of at most two elements of $\mathcal{P}$.
+  \end{compactenum}
+
 \end{compactenum}
 
 \begin{figure}
@@ -142,7 +146,9 @@ For each $i\in\{1,2,3\}$, let $Z_i$ be the path, in $T$, from $x_i$ up to, but n
 We now show that $Q_1$ satisifies preconditions (P1)--(P3). The face $Q_1$ is a cycle in $G$ that is contained in the cycle $F$, so $Q_1$ satisifies precondition (P1).  The vertices of $Q_1$ are contained in $V(P_2)\cup V(P_3)\cup Y$.  Therefore every vertex of $Q_1$ is contained in some part of $\mathcal{P}$, so $Q_1$ satisfies precondition (P3).  For each vertex $w$ in the interior of $Q_1$, every $T$-ancestor of $w$ is either in $Y$, $F$, or the exterior of $F$.  Therefore $Q_1$ satisifies precondition (P2).
 
 Next we describe the three portals used when recursing on $Q_1$.
-The cycle $Q_1$ contains at least one vertex each from $V(P_2)$ and $V(P_3)$ and therefore also contains the portal $e_1$, which is also used as one of the three portals in the recursive invocation.  If $V(Z_2)\cup V(Z_3)$ is non-empty, then $Q_1$ contains two edges $e_2'$ and $e_3'$ where $e_2'$ has an endpoint in $V(P_3)$ and an endpoint in $V(Z_2)\cup V(Z_3)$ and where $e_3'$ has an endpoint in $V(P_2)$ and an endpoint in $V(Z_2)\cup V(Z_3)$.  In this case, the edges $e_1$, $e_2'$, and $e_3'$ are used as the three portal in the recursive invocation on $Q_1$.  If $(V(Z_2)\cup V(Z_3))$ is empty---because $x_2\in V(P_2)$ and $x_3\in V(P_3)$---then we artifically create two portals $e_2'$ and $e_3'$ for the recursive invocation by taking any two edges of $Q_1$ other than $e_1$.
+The cycle $Q_1$ contains at least one vertex each from $V(P_2)$ and $V(P_3)$ and therefore also contains the portal $e_1$, which is also used as one of the three portals in the recursive invocation.  If $V(Z_2)\cup V(Z_3)$ is non-empty, then $Q_1$ contains two edges $e_2'$ and $e_3'$ where $e_2'$ has an endpoint in $V(P_3)$ and an endpoint in $V(Z_2)\cup V(Z_3)$ and where $e_3'$ has an endpoint in $V(P_2)$ and an endpoint in $V(Z_2)\cup V(Z_3)$.  In this case, the edges $e_1$, $e_2'$, and $e_3'$ are used as the three portal in the recursive invocation on $Q_1$.  Note that this satisfies precondition (P4) since the vertices of $P_1'$---the path from $e_2'$ to $e_3'$ on $Q_1$ that does not contain $e_1$---are contained in the union of $V(Z_2)$ and $V(Z_3)$, which are included in $\mathcal{P}$.
+
+If $(V(Z_2)\cup V(Z_3))$ is empty---because $x_2\in V(P_2)$ and $x_3\in V(P_3)$---then we artifically create two portals $e_2'$ and $e_3'$ for the recursive invocation by taking any two edges of $Q_1$ other than $e_1$. Clearly, this choice of $e_2'$ and $e_3'$ also satisfies precondition (P4).
 
 The recursive invocations on $Q_2$ and $Q_3$ are done similarly, but rotating the values $1,2,3$.  After these three recursive invocations, every vertex in $N-V(F)$ is included in some part of $P$, so the recursive invocation is complete.  Dujmović \etal\  then show that the contraction $H:=G/\mathcal{P}$ has treewidth at most 8. There is no need to repeat their argument here.  Instead we discuss the running time of this algorithm.
 
@@ -258,6 +264,10 @@ All that remains is to describe the required data structure.
 
 \section{Discussion}
 \seclabel{discussion}
+
+Another variant of \thmref{planar-partition} given by Dujmović \etal\ gives a partition $\mathcal{P}$ of $V(G)$ such that $G/\mathcal{P}$ has treewidth at most 3 and each part $Y\in\mathcal{P}$ is the union of at most 3 vertical paths in $T$.  The algorithm described here also gives an $O(n\log^2 n)$ time algorithm for this variant.
+
+
 
 \thmref{product-structure} has been generalized to a number of graph classes including bounded-genus graphs \cite{dujmovic.joret.ea:planar}, apex-minor free graphs \cite{dujmovic.joret.ea:planar}, graphs of bounded-degree from proper-minor closed families \cite{dujmovic.esperet.ea:planar}, and $k$-planar graphs \cite{dujmovic.morin.ea:structure}.  In all cases, these generalizations ultimately reduce to planar graphs by decomposing the input graphs into a number of planar graphs and applying \thmref{product-structure} to each of these planar graphs.
 
