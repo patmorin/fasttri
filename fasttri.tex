@@ -296,12 +296,12 @@ The algorithm presented here applies immediately to the four applications of \th
 
 \begin{itemize}
   \item There exists an algorithm that, given an $n$-vertex planar graph $G$, runs in $O(n\log n)$ time and computes a 49 queue layout of $G$ \cite{dujmovic.joret.ea:planar}.
-  
+
   \item There exists an algorithm that, given an $n$-vertex planar graph $G$, runs in $O(n\log n)$ time and computes a nonrepetitive colouring of $G$ using at most 768 colours \cite{dujmovic.esperet.ea:planar}.
 
   \item There exists an algorithm that, given an $n$-vertex planar graph $G$, runs in $O(n\log n)$ time and computes a $(1+o(1))\log n$-bit adjacency labelling of $G$ \cite{dujmovic.esperet.ea:adjacency}.
-  
-  \item There exists an algorithm that, given an $n$-vertex planar graph $G$ and an integer $p$, runs in $O(n\log n)$ time and computes $p$-centered colouring of $G$ using at most $3(p+1)\binom{p+3}{3}$ colours \cite{debski.felsner.ea:improved}.
+
+  \item There exists an algorithm that, given an $n$-vertex planar graph $G$ and an integer $p$, runs in $O(p^3n\log n)$ time and computes $p$-centered colouring of $G$ using at most $3(p+1)\binom{p+3}{3}$ colours \cite{debski.felsner.ea:improved}.
 \end{itemize}
 
 Prior to this work, the bottleneck in all these algorithms was the $\Theta(n^2)$ worst-case running time of the algorithm for computing the decomposition of \thmref{product-structure}.
