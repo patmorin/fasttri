@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70212" creator="Ipe 7.2.13">
-<info created="D:20200402142341" modified="D:20200403161615"/>
+<info created="D:20200402142341" modified="D:20200405220607"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -268,8 +268,9 @@ h
 <layer name="mercedes-bichrome"/>
 <layer name="mercedes-portals"/>
 <layer name="mercedes-dualpaths"/>
+<layer name="annoying"/>
 <view layers="edges outer-cycle trees monochrome bichrome portals sperner dual-paths" active="portals"/>
-<view layers="edges sperner mercedes mercedes-monochrome mercedes-dead mercedes-sperners mercedes-bichrome mercedes-portals" active="mercedes-monochrome"/>
+<view layers="edges sperner mercedes mercedes-monochrome mercedes-dead mercedes-sperners mercedes-bichrome mercedes-portals annoying" active="annoying"/>
 <path layer="mercedes-monochrome" matrix="1 0 0 1 42.635 -17.672" stroke="black">
 227.39 574.752 m
 232.496 597.265 l
@@ -1848,5 +1849,17 @@ h
 <use matrix="1 0 0 1 -16.691 11.7455" name="mark/disk(sx)" pos="218.57 623.723" size="large" stroke="black"/>
 <use matrix="1 0 0 1 -16.691 11.7455" name="mark/disk(sx)" pos="137.57 594.248" size="large" stroke="blue"/>
 <use matrix="1 0 0 1 -16.691 11.7455" name="mark/disk(sx)" pos="144.069 567.789" size="large" stroke="blue"/>
+<path layer="annoying" stroke="red" pen="heavier">
+187.151 683.409 m
+230.741 686.236 l
+</path>
+<path stroke="blue" pen="heavier">
+102.658 587.886 m
+118.472 559.313 l
+</path>
+<path stroke="darkgreen" pen="heavier">
+332.173 499.148 m
+367.107 517.615 l
+</path>
 </page>
 </ipe>
