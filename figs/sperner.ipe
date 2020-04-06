@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70212" creator="Ipe 7.2.13">
-<info created="D:20200402142341" modified="D:20200404105046"/>
+<info created="D:20200402142341" modified="D:20200405215614"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -271,7 +271,7 @@ h
 <layer name="p-labels"/>
 <layer name="dual-paths-faces"/>
 <layer name="mercedes-skeleton-labels"/>
-<view layers="edges outer-cycle trees monochrome bichrome portals sperner p-labels" active="portals"/>
+<view layers="edges outer-cycle trees monochrome bichrome portals sperner p-labels" active="trees"/>
 <view layers="mercedes-skeleton p-labels mercedes-skeleton-labels" active="mercedes-skeleton"/>
 <view layers="edges sperner mercedes mercedes-monochrome mercedes-dead mercedes-sperners mercedes-bichrome mercedes-portals" active="mercedes-bichrome"/>
 <view layers="edges trees monochrome bichrome portals sperner dual-paths" active="dual-paths"/>
@@ -1838,6 +1838,10 @@ h
 <path stroke="black" fill="gray">
 248.046 615.136 m
 292.143 595.64 l
+</path>
+<path layer="trees" stroke="red" pen="heavier">
+203.842 671.664 m
+247.432 674.491 l
 </path>
 </page>
 </ipe>
