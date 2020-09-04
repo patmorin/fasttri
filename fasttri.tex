@@ -184,27 +184,27 @@ It is straightforward to show, by induction, that $T(f)\le (a/3)f\log_3(f)=O(a\c
 %    & \le (f-1)/3 + T(f_1)+T(f_2)+T(f_3) &\text{since $f_1+f_2+f_3=f-1$} \\
 %    & \le (f-1)/3 + f_1\logT(f_1)+T(f_2)+T(f_3) &\text{since $f_1+f_2+f_3=f-1$} \\
 
-Our algorithm makes use of a data structure that preprocesses a $(n+1)$-vertex tree $T$ with root $r$ whose nodes are all initially uncoloured and that supports the following operations:
-\begin{enumerate}
-   \item $\textsc{Colour}(v,c)$: Set the colour $c(v)$ of the node $v$ of $T$ to some integer value $c$.
+Our algorithm makes use of a data structure that preprocesses a $(n+1)$-vertex tree $T$ with root $r$ so that it can maintain a set $S\subseteq V(T)$ that, initially, contains only $r$, and supports the following operations that each take a node $w\in V(T)$ as an argument:
 
-   \item $\textsc{FirstColour}(w)$: Return the colour of the first coloured node on the path from node $w$ to the root of $T$.
-\end{enumerate}
-% We will deliberately conflate the data structure for $T$ and the spanning tree $T$ of $G$ used by the algorithm.
+\begin{itemize}
+    \item $\textsc{Mark}(w)$: Add $w$ to the set $S$.  A precondition of this operation is that the parent, $v$, of $w$ is already in $S$ but $w$ is not yet in $S$.
 
-Gabow and Tarjan \cite{gabow.tarjan:linear} prove the following result:\footnote{In the terminology of Gabow and Tarjan \cite{gabow.tarjan:linear}, $\textsc{Colour}(v,c)$ corresponds to \emph{marking} a node $v$ and $\textsc{FirstColour}(w)$ corresponds to find the \emph{nearest marked ancestor} of $w$.}
-\begin{thm}[Gabow and Tarjan (1985)]\thmlabel{data-structure}
- Any rooted $n$-vertex tree $T$ can be processed in $O(n)$ time so that any sequence consisting of a total of $m\ge n$ $\textsc{Colour}(v,c)$ and
- $\textsc{FirstColour}(w)$ operations can be performed in $O(m)$ time.
-\end{thm}
+    \item $\textsc{NearestMarkedAncestor}(w)$:  Return the first node $v\in S$ that is on the path from $w$ to the root of $T$.
+\end{itemize}
 
-In the remainder of this section, we will show how \thmref{data-structure} can be used to achieve the desired running time.  In particular, we will show that the number of calls to $\textsc{FirstColour}(w)$ made in our algorithm is $O(n\log n)$ and the number of calls to $\textsc{Colour}(v,c)$ is $O(n)$.  Since we are only interested in the overall running-time of our algorithm, we will treat each such call as taking $O(1)$ time.
+In \appref{data_structures} we show how to use standard techniques to obtain the following result:
 
-It is worth noting that the algorithm we now describe produces exactly the same partition $\mathcal{P}$ produced by the algorithm of Dujmović \etal\ and therefore $\mathcal{P}$ has all the properties described by Dujmović \etal\.   In particular, the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
+\begin{lem}\lemlabel{nearest_marked_ancestor}
+    There exists a data structure that preprocesses any $n$-node rooted tree $T$ and supports the $\textsc{Mark}(w)$ and $\textsc{NearestMarkedAncestor}(w)$ operations. Each $\textsc{NearestMarkedAncestor}(w)$ operation takes $O(1)$ time and any sequence of $\textsc{Mark}(w)$ operations takes a total of $O(n\log n)$ time.
+\end{lem}
 
-As before, each recursive step takes as input the cycle $F$ and the three portals $e_1$, $e_2$, and $e_3$.  Additionally, the algorithm requires that the vertices of $P_1$, $P_2$ and $P_3$ are coloured with three different colours.  More precisely, there are three distinct integers $c_1$, $c_2$ and $c_3$ such that $c(v)=c_i$ for each $v\in V(P_i)$ and each $i\in\{1,2,3\}$.
+In the remainder of this section, we will show how \lemref{nearest_marked_ancestor} can be used to achieve the desired running time.  It is worth noting that the algorithm we now describe produces exactly the same partition $\mathcal{P}$ produced by the algorithm of Dujmović \etal\ and therefore $\mathcal{P}$ has all the properties described by Dujmović \etal.  In particular, the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
 
- The algorithm searches for the trichromatic triangle $\tau$ beginning from the portals.  Refer to \figref{fast-search}. Step~0 of the search begins with $e_{i,0}=e_i$ and $t_{i,0}$ as the unique triangular inner face of $N$ with $e_i$ on its boundary, for each $i\in\{1,2,3\}$. In Step~$j$ of the search, the algorithm has three triangles $t_{i,j}$ and three edges $e_{i,j}$ where $e_{i,j}$ is an edge of $t_{i,j}$ for each $i\in\{1,2,3\}$.  Using the data structure for $T$, the algorithm checks, for each $i\in\{1,2,3\}$, the colours of $t_{i,j}$'s three vertices by calling $\textsc{FirstColour}(w)$.\footnote{Note that each vertex $w$ of $t_{i,j}$ satisfy the precondition for the argument $w$ of $\textsc{FirstColour}(w)$ since every vertex of $F$ is already coloured and, by (P1), the path $P_{T}(w)$ contains at least one vertex of $F$.}  If $t_{i,j}$ is trichromatic for at least one $i\in\{1,2,3\}$, then the algorithm has found the necessary trichromatic triangle $\tau$ and this step is complete. Otherwise, for each $i\in\{1,2,3\}$, the triangle $t_{i,j}$ contains another bichromatic edge $e_{i,j+1}\neq e_{i,j}$ and this edge bounds another triangular face $t_{i,j+1}\neq t_{i,j}$ of $N$.  The algorithm then continues to Step~$(j+1)$ of the search using the triangles $t_{i,j+1}$ and edges $e_{i,j+1}$ for each $i\in\{1,2,3\}$.  The fact that this algorithm terminates (and would even terminate if the search were limited to any one of the portals) follows from a classic proof of Sperner's Lemma in 2-dimensions.
+As before, each recursive step takes as input the cycle $F$ and the three portals $e_1$, $e_2$, and $e_3$.  Additionally, the algorithm requires that the vertices of $P_1$, $P_2$ and $P_3$ are coloured with three different colours.  More precisely, there are three distinct integers $c_1$, $c_2$ and $c_3$ such that $c(v)=c_i$ for each $v\in V(P_i)$ and each $i\in\{1,2,3\}$.  The nearest marked ancestor data structure maintaining $S\subseteq V(T)$ is set up so that $V(F)\subseteq S$ and $(V(N)\setminus V(F))\cap S=\emptyset$.  That is, $S$ contains all vertices on the outer face of $N$, but none of the inner vertices.
+
+The algorithm searches for the trichromatic triangle $\tau$ beginning from the portals.  Refer to \figref{fast-search}. Step~0 of the search begins with $e_{i,0}=e_i$ and $t_{i,0}$ as the unique triangular inner face of $N$ with $e_i$ on its boundary, for each $i\in\{1,2,3\}$. In Step~$j$ of the search, the algorithm has three triangles $t_{i,j}$ and three edges $e_{i,j}$ where $e_{i,j}$ is an edge of $t_{i,j}$ for each $i\in\{1,2,3\}$.  Using the data structure for $T$, the algorithm checks, for each $i\in\{1,2,3\}$, the colours of $t_{i,j}$'s three vertices by calling $\textsc{NearestMarkedAncestor}(w)$ for each of $t_{i,j}$'s three vertices.  This returns a vertex $v\in V(F)$ whose colour gives the colour of $w$.
+
+If $t_{i,j}$ is trichromatic for at least one $i\in\{1,2,3\}$, then the algorithm has found the necessary trichromatic triangle $\tau$ and this step is complete. Otherwise, for each $i\in\{1,2,3\}$, the triangle $t_{i,j}$ contains another bichromatic edge $e_{i,j+1}\neq e_{i,j}$ and this edge bounds another triangular face $t_{i,j+1}\neq t_{i,j}$ of $N$.  The algorithm then continues to Step~$(j+1)$ of the search using the triangles $t_{i,j+1}$ and edges $e_{i,j+1}$ for each $i\in\{1,2,3\}$.  The fact that this algorithm terminates (and would terminate even if the search were limited to any one of the portals) follows from a classic proof of Sperner's Lemma in 2-dimensions.
 
  \begin{figure}
    \begin{center}
@@ -215,14 +215,13 @@ As before, each recursive step takes as input the cycle $F$ and the three portal
    \figlabel{fast-search}
  \end{figure}
 
-
 Suppose the search for $\tau$ succeeds when $\tau=t_{i,k}$ in Step~$k$.  Thus, for each $i\in\{1,2,3\}$, the algorithm has searched the sequence of triangles $t_{i,0},\ldots,t_{i,k}$.  Each of the shorter subsequences $S_i:=t_{i,0},\ldots,t_{i,k-1}$ consists entirely of bichromatic triangles. Each sequence $S_i$ contains $k$ bichromatic triangles whose vertices are coloured with $\{c_1,c_2,c_3\}\setminus c_i$.
 
-Refer to the second part of \figref{fast-search}. Consider again the graph $M$ with faces $Q_1$, $Q_2$, $Q_3$ and $\tau$. For each $i\in\{1,2,3\}$, each face in $S_i$ is contained in $Q_i$.  Since $f_i$ counts the number of triangular faces of $N$ contained in $Q_i$, this implies that $f_i\ge k$ for each $i\in \{1,2,3\}$.  Therefore, $\min\{f_1,f_2,f_3\}\ge k$.  On the other hand, the search for for $\tau$ took $1+k$ steps, each of which performs three $\textsc{FirstColour}(w)$ queries and therefore the entire search runs in time $O(1+k) \subseteq O(1+\min\{f_1,f_2,f_3\})$.
+Refer to the second part of \figref{fast-search}. Consider again the graph $M$ with faces $Q_1$, $Q_2$, $Q_3$ and $\tau$. For each $i\in\{1,2,3\}$, each face in $S_i$ is contained in $Q_i$.  Since $f_i$ counts the number of triangular faces of $N$ contained in $Q_i$, this implies that $f_i\ge k$ for each $i\in \{1,2,3\}$.  Therefore, $\min\{f_1,f_2,f_3\}\ge k$.  On the other hand, the search for for $\tau$ took $1+k$ steps, each of which performs three $\textsc{NearestMarkedAncestor}(w)$ queries and therefore the entire search runs in time $O(1+k) \subseteq O(1+\min\{f_1,f_2,f_3\})$.
 
-Next, the algorithm prepares the three subproblems defined by $Q_1$, $Q_2$, and $Q_3$ on which to recurse.  To do this it follows the path, in $T$, from each vertex $x_i$ of $\tau$ to the first vertex of $P_i$, calling $\textsc{Colour}(v,c_4)$ for each vertex $v$ it encounters with any integer $c_4\not\in\{c_1,c_2,c_3\}$.
+Next, the algorithm prepares the three subproblems defined by $Q_1$, $Q_2$, and $Q_3$ on which to recurse.  To do this it follows the path $Z_i$, in $T$, from each vertex $x_i$ of $\tau$ to the first vertex of $P_i$.  It colours each vertex of $z_i$ with some colour $c_4\not\in\{c_1,c_2,c_3\}$ and then walks $Z_i$ backward, calling $\textsc{Mark}(w)$ for each vertex of $Z_i$.
 
-Finally, in preparing each subproblem $Q_i$ for the recursive invocation, it may be necessary to recolour an already coloured vertex $v$ of $F$ with the colour $c_4$ before making the recursive call and then recolouring $v$ with its original colour once the recursion is complete.  This corresponds to introducing an artificial portal adjacent to an edge of $\tau$ contained in $F$.
+Finally, in preparing each subproblem $Q_i$ for the recursive invocation, it may be necessary to change the colour of an already coloured vertex $v$ of $F$ with the colour $c_4$ before making the recursive call and then recolouring $v$ with its original colour once the recursion is complete.  This corresponds to introducing an artificial portal adjacent to an edge of $\tau$ contained in $F$.
 
 \subsection{Running-Time Analysis}
 
@@ -230,7 +229,10 @@ We analyze the running time of the preceding algorithm by analyzing two parts se
 
 During each recursive invocation, the algorithm does work to find the trichromatic triangle $\tau$.  The time associated with this is $O(1+k)$ where $k\ge \min\{f_1,f_2,f_3\}$.  As already described above, this leads to a recurrence of the form $T(f) \le O(\min\{f_1,f_2,f_3\}) + T(f_1)+T(f_2)+T(f_3)$ which resolves to $O(f\log f)$.  In the initial call, $f=2n-3$ is the number of inner faces of $G$, so the total running time attributable to this part of the algorithm is $O(n\log n)$.
 
-In addition to this, the algorithm does other work in preparing inputs for recursive calls.  Once $\tau$ is identified, the previously uncoloured vertices of $Y$ are coloured with a call to $\textsc{Colour}(v,c)$.  Since each of the $n$ vertices of $G$ are coloured at most once for the first time, this takes a total of $O(n)$ time.  In addition to this, preparing the subproblem $Q_1$, $Q_2$, and $Q_3$ may require an additional 6 calls to $\textsc{Colour}(v,c)$. However, the number of recursive invocations of the algorithm is exactly $2n-3$, since the triangle $\tau$ identified during the invocation is not included in any of the recursive calls.  Therefore, the total running time attributable to these parts of the algorithm is $O(n)$.  This completes the proof of our main theorem:
+In addition to this, the algorithm does other work in preparing inputs for recursive calls.  Once $\tau$ is identified, the previously uncoloured vertices of $Y$ are coloured.  A vertex $v\in V(G)$ appears in $Y$ during exactly one recursive invocation. Thus, colouring the vertices of $Y$ contributes a total of $O(n)$ time to the running time of the entire algorithm.
+
+Finally, the vertices of $Y$ are added to the set $S$ maintained by the nearest marked ancestor data structure using calls to $\textsc{Mark}(w)$.  By \lemref{nearest_marked_ancestor}, this takes a total of $O(n\log n)$ time.
+This completes the proof of our main theorem:
 
 \begin{thm}
   There exists an algorithm that, given any $n$-vertex triangulation $T$ and any breadth-first-spanning tree $T$ of $G$, runs in $O(n\log n)$ time and finds a partition $\mathcal{P}$ of $V(G)$ such that each $P\in\mathcal{P}$ induces a vertical path in $T$ and the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
@@ -302,6 +304,7 @@ The algorithm presented here applies immediately to the four applications of \th
   \item There exists an algorithm that, given an $n$-vertex planar graph $G$, runs in $O(n\log n)$ time and computes a $(1+o(1))\log n$-bit adjacency labelling of $G$ \cite{dujmovic.esperet.ea:adjacency}.
 
   \item There exists an algorithm that, given an $n$-vertex planar graph $G$ and an integer $p$, runs in $O(p^3n\log n)$ time and computes $p$-centered colouring of $G$ using at most $3(p+1)\binom{p+3}{3}$ colours \cite{debski.felsner.ea:improved}.
+
 \end{itemize}
 
 Prior to this work, the bottleneck in all these algorithms was the $\Theta(n^2)$ worst-case running time of the algorithm for computing the decomposition of \thmref{product-structure}.
@@ -323,65 +326,60 @@ Part of this research was conducted during the Eighth Workshop on Geometry and G
 \appendix
 
 \section{Data Structures}
+\applabel{data_structures}
 
+In this appendix we describe the simple data structures used by our algorithm. Devising these data structures is an exercise in the use two standard techniques (a simple union-find data structure and the interval labelling scheme for rooted trees).
 
 \subsection{Interval Splitting}
 
-An interval splitting data structure stores a subset $S$ of $\{1,\ldots,n\}$ under the following two operations, each of which takes an integer argument $x\in\{1,\ldots,n\}$:
+An interval splitting data structure stores an initially-empty subset $S$ of $\{1,\ldots,n\}$ under the following two operations, each of which takes an integer argument $x\in\{1,\ldots,n\}$:
 \begin{itemize}
-    \item $\textsc{Add}(x)$: Add $x$ to the set $S$, i.e., $S\gets S\cup \{x\}$.
+    \item $\textsc{Add}(x)$: Add $x$ to the set $S$, i.e., $S\gets S\cup \{x\}$.  It is a precondition of this operation that $x\not\in S$.
     \item $\textsc{Interval}(x)$: Return the pair $(i,j)$ where $i=\max\{y\in S\cup\{0\}:y<x\}$ and $j=\min\{y\in S\cup\{n+1\}:y\ge x\}$.
 \end{itemize}
 
-\begin{lem}
-    There exists a data structure that preprocesses an integer $n$ and supports the $\textsc{Add}(x)$ and $\textsc{Interval}(x)$ operations.  The data structures uses $O(n)$ preprocessing time and any sequence of $m$ operations on this data structure runs in $O(m+n\log n)$ time.
+\begin{lem}\lemlabel{interval_splitting}
+    There exists a data structure that preprocesses an integer $n$ and supports the $\textsc{Add}(x)$ and $\textsc{Interval}(x)$ operations.  The data structures uses $O(n)$ preprocessing time, each $\textsc{Interval}(x)$ operation runs in $O(1)$ time and any sequence of $\textsc{Add}(x)$ operations takes a total of $O(n\log n)$ time.
 \end{lem}
 
 \begin{proof}
-    The data structure consists of an array $a_1,\ldots,a_n$ of pointers.  The array entry $a_x$ points to a memory location $m$ storing the interval $(i,j)$ that answers the $\textsc{Interval}(x)$ query.  In this way each $\textsc{Interval}(x)$ query operation runs in $O(1)$ time.
+    The data structure is essentially the inverse of one of the simplest union-find data structures that represents sets as linked lists in which each node has a pointer to the head of the list.
 
-    More specifically, suppose the elements $x_1<\cdots<x_k$ have been added to the data structure by calls to the $\textsc{Add}(x)$ operation.  Let $x_0:=0$ and $x_{k+1}=n+1$.  Then, for each $i\in \{0,\ldots,k\}$, the array locations $a_{x_{i}+1},\ldots,a_{x_{i+1}}$ all point the same memory location $m$ that contains the pair $(i,j)$ that answers the $\textsc{Interval}(x)$ query for any value $x\in\{x_{i}+1,\ldots,x_{i+1}\}$.
+    The data structure contains an array $a_1,\ldots,a_n$ of pointers.  For each $x\in\{1,\ldots,n\}$, the array entry $a_x$ points to a memory location $m$ storing the interval $(i,j)$ that answers the $\textsc{Interval}(x)$ query.  In this way each $\textsc{Interval}(x)$ query operation runs in $O(1)$ time.
 
-    To perform an $\textsc{Add}(x)$ operation, one first looks at the pair $(i,j)$ stored at the memory location $m$ referenced by $a_x$.
-    Observe that the $j-i$ array entries $a_{i+1},\ldots,a_{j}$ all point to the same memory location $m$ and let $k:=x-i$.  The data structure allocates a new memory location $m'$ containing a pair $(i',j')$.  The algorithm then does the smallest amount of work possible, as follows:
+    More specifically, suppose the elements $x_1<\cdots<x_k$ have been added to the data structure by calls to the $\textsc{Add}(x)$ operation.  We use the convention that $x_0:=0$ and $x_{k+1}=n+1$.  Then, for each $i\in \{0,\ldots,k\}$, the array locations $a_{x_{i}+1},\ldots,a_{\min\{n,x_{i+1}\}}$ all point the same memory location $m$ that contains the pair $(i,j)$, $i<x\le j$ that answers the $\textsc{Interval}(x)$ query for each value $x\in\{x_{i}+1,\ldots,x_{i+1}\}$.  Thus, the number of distinct memory locations $m$ used to store answers to $\textsc{Interval}(x)$ queries is exactly $k+1$.
+
+    To perform an $\textsc{Add}(x)$ operation, the data structure first looks at the pair $(i,j)$ stored at the memory location $m$ referenced by $a_x$.
+    Observe that the $j-i$ array entries $a_{i+1},\ldots,a_{j}$ all point to the same memory location $m$ and let $k:=x-i$.  The data structure allocates a new memory location $m'$ containing a pair $(i',j')$.  The algorithm then makes a choice, depending on the value of $k$.
 
     \begin{enumerate}
         \item If $k\le (j-i)/2$, then it sets $(i',j')\gets (i,x)$, sets $(i,j)\gets (x,j)$ and sets $a_{i+1},\ldots,a_{x}\gets m'$.
-        \item Otherwise, $k> (j-i)/2$, then it sets $(i',j')\gets (x,j)$, sets $(i,j)\gets (i,x)$ and sets $a_{x+1},\ldots,a_{j}\gets m'$.
+        \item Otherwise, it sets $(i',j')\gets (x,j)$, sets $(i,j)\gets (i,x)$ and sets $a_{x+1},\ldots,a_{j}\gets m'$.
     \end{enumerate}
-    It is straightforward to verify that these operations are correct.  To analyze the running time, we use the potential method of amortized analysis.  For each $x\in\{1,\ldots,n\}$, let $\Phi_x=c\log_2(j-i)$ where $(i,j)$ is the answer to $\textsc{Interval}(x)$ and let $\Phi=\sum_{x=1}^n \Phi_x$.  Observe that $0\le \Phi_x\le c\log_2(n+1)$ for each $x\in\{1,\ldots,n\}$, so $0\le \Phi\le cn\log_2(n+1)$.
+    It is straightforward to verify that these operations are correct and we have already noted that $\textsc{Interval}(x)$ runs in $O(1)$ time.  To analyze total running time of a sequence of $\textsc{Add}(x)$ operations, we use the potential method of amortized analysis.  For each $\ell\in\{1,\ldots,n\}$, let $\Phi_\ell=c\log_2(j-i)$ where $(i,j)$ is the answer to $\textsc{Interval}(\ell)$ and let $\Phi=\sum_{\ell=1}^n \Phi_\ell$.  Observe that $0\le \Phi_\ell\le c\log_2(n+1)$ for each $\ell\in\{1,\ldots,n\}$, so $0\le \Phi\le cn\log_2(n+1)$. Note, furthermore that the $\textsc{Interval}(x)$ operation has no effect on $\Phi$.
 
-    When an $\textsc{Add}(x)$ operation runs, it updates some number $z$ of array entries (either $z=k$ or $z=j-i-k$.   This takes $O(z)$ time, but causes $\Phi_\ell$ to decrease by at least $c$ for each array entry $a_\ell$ that has changed and does not increase $\Phi_\ell$ for any value of $\ell$.  Therefore, letting $\Phi$ and $\Phi'$ denote the value of $\Phi$ before and after this operation, we have $\Phi'-\Phi \le -cz$.  The amortized running time of this operation is therefore $O(1+z+\Phi'-\Phi) = O(1)$ for a sufficiently large constant $c$.
+    When an $\textsc{Add}(x)$ operation runs, it updates some number $z$ of array entries (either $z=k$ or $z=j-i-k$.   This takes $O(z)$ time and does not cause $\Phi_\ell$ to increase for any $\ell\in\{1,\ldots,n\}$.  Furthermore, this operation causes $\Phi_\ell$ to decrease by at least $c$ for each array entry $a_\ell$ that is modified. Therefore, letting $\Phi$ and $\Phi'$ denote the value of $\Phi$ before and after this operation, we have $\Phi'-\Phi \le -cz$.  The amortized running time of this operation is therefore $O(1+z+\Phi'-\Phi) = O(1)$ for a sufficiently large constant $c$.
 
-    Each $\textsc{Interval}(x)$ operation runs in $O(1)$ time and has no effect on $\Phi$, so it runs in $O(1)$ amortized time.  Therefore each operation runs in $O(1)$ amortized time, the minimum potential is $0$ and the maximum potential is $cn\log_2(n+1)$, so the total running time of any sequence of $m$ operations is at most $O(m + n\log n)$.
+    Therefore each $\textsc{Add}(x)$ operation runs in $O(1)$ amortized time, the minimum potential is $0$ and the maximum potential is $cn\log_2(n+1)$, so the total running time of any sequence of $\textsc{Add}(x)$ operations is at most $O(m + n\log n)$.  The precondition that $x\not\in S$ ensures that $m\le n$, so the total running time is $O(n\log n)$.
 \end{proof}
 
 \subsection{Nearest Marked Ancestor}
 
-We require a data structure that stores a (BFS) tree $T$ and maintains a set $S\subset V(T)$ such that $T[S]$ is connected and, if non-empty, $S$ contains the root of $T$.  Initially the set $S$ contains only the root of $T$.  We must support the following operations:
 
-\begin{itemize}
-    \item $\textsc{Mark}(v)$: Add $w$ to the set $S$.  A precondition of this operation is that the parent of $v$ of $w$ is already in $S$ but $w$ is not yet in $S$.
+\begin{proof}[Proof of \lemref{nearest_marked_ancestor}]
+    The data structure is essentially the interval labelling scheme for trees combined with the interval splitting data structure from the previous section.
 
-    \item $\textsc{NearestMarkedAncestor}(v)$:  Return the first node $u\in S$ that is on the path from $v$ to the root of $T$.
-\end{itemize}
+    Let $T'$ be the directed graph obtained by replacing each undirected edge $vw$ of $T$ with two directed edges $vw$ and $wv$.  Since every node of $T'$ has the same in and out degree, it is Eulerian.  Let $v_1,v_2,\ldots,v_{2n-1}$ be the sequence of vertices encountered during an Euler tour of $T'$ that begins and ends at the root $v_1=v_{2n-1}$ of $T$.
+    For each node $v$ of $T$, let $i_v:=\min\{i:v_i=v\}$ and $j_v:=\max\{j:v_j=v\}$. Observe that $v_{i_v},v_{i_v+1},\ldots,v_{j_v}$ contains exactly those nodes of $T$ that have $v$ as a $T$-ancestor.
 
-\begin{lem}
-    There exists a data structure that supports the $\textsc{Mark}(v)$ and $\textsc{NearestMarkedAncestor}(v)$ operations on an $n$-vertex tree $T$. This data structure requires $O(n)$ preprocessing time and can perform any sequence of $m$ operations in $O(m + n\log n)$ time.
-\end{lem}
+    The data structure stores the sequence $v_0,v_1,v_2,\ldots,v_{2n-1}$ in an array and maintains an interval splitting data structure on the set $1,\ldots,2n-1$.  The operation of $\textsc{Mark}(w)$ is simple: We simply call $\textsc{Add}(i_w)$ and $\textsc{Add}(j_w)$.  Note that the precondition that $w\not\in S$ ensures that the precondition $x\not\in S$ of the $\textsc{Add}(x)$ operation is satisified.  Thus, any sequence of $\textsc{Mark}(w)$ operations results in a sequence of $\textsc{Add}(x)$ operations on the set $\{1,\ldots,2n-1\}$.  By \lemref{interval_splitting} this takes a total of $O(n\log n)$ time, as required.
 
-\begin{proof}
-    Let $T'$ be the directed graph obtained by replacing each undirected edge $vw$ of $T$ with two directed edges $vw$ and $wv$.  Since every vertex of $T'$ has the same in and out degree, it is Eulerian.  Let $v_0,e_1,v_2,e_3,\ldots,v_{3n-3}$ be the sequence of vertices and edges encountered during an Euler tour of $T'$ that begins and ends at the root $v_0=v_{3n+3}$ of $T$.  Observer that if some edge $e$ of $T$ maps to two edges $e_i=vw$ and $e_j=wv$ with $i<j$, then $v_{i+1}=v_{j-1}=w$ and $v_{i+1},\ldots,v_{j-1}$ contains every edge and vertex in the subtree of $T$ rooted at $w$.  In this way, each edge $vw$ of $T$ joining a node $w$ to its parent $v$ maps to an interval $(i_{vw},j_{vw})$.  Similarly, each node $v$ in $T$ maps to an interval $(i_v,j_v)$ where $i_v=\min\{i:v_i=v\}$ and $j_v=\max\{j:v_j=v\}$.
-
-    The data structure will therefore store a subset $S'$ of the integers $\{1,\ldots,2n-2\}$ so it can answer $\textsc{Interva}(x)$ queries on $S'$.  In particular, for each edge $vw$ of $T$ where the parent $v$ of $w$ is contained in $S$, the data structure will store the integers $i_{vw}$ and $j_{vw}$.  In this way, the total number of $\textsc{Add}(x)$ operations resulting from any sequence of $\textsc{Mark}(v)$ operations is at most $2n-2$, the number of edges in $T$.
-
-    Along with each node $v\in V(T)$ we store integers $i_v=\min\{i:v_i=v\}$ and $j_v=\max\{j:v_j=v\}$.  To answer a $\textsc{NearestMarkedAncestor}(u)$ query, we perform two $\textsc{Interval}(x)$ queries with the values $x:=i_v$ and $x:=j_v$.  There are two cases to consider:
+    The operation of the $\textsc{NearestMarkedAncestor}(v)$ is almost as simple.  We call $\textsc{Interval}(i_w)$ to obtain some pair $(i,j)$ with $i< i_w \le j$.  There are two cases to consider:
     \begin{enumerate}
-        \item If $u\not\in S$, then this both queries will return the same value $(i,j)$ such that $e_i=vw$, $e_j=wv$, $i< i_u \le j_u < j$ and $v$ is the nearest marked ancestor of $u$.
-
-        \item If $u\in S$, then this query will return a value $(i,j)$ such that $i< i_v$
-
-
+        \item If $j=i_w$ then this is because $w\in S$, in which case $w$ is the nearest marked ancestor of itself.
+        \item Otherwise, $i<i_w<j$, and $(i,j)=(i_v,j_v)$ for some node $v\in S$.  Therefore, $v_{i}=v_{j}$ is the nearest marked ancestor of $w$.
+    \end{enumerate}
+    Therefore, in either case, we obtain the nearest marked ancestor of $w$ in $O(1)$ time, as required.
 \end{proof}
 
 
