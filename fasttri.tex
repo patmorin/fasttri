@@ -96,7 +96,8 @@ The remainder of this paper is organized as follows. \Secref{original} reviews t
 
 Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  Every graph $G$ that we consider is finite, simple, and undirected, and has vertex set denoted by $V(G)$ and edge set denoted by $E(G)$.
 
-Let $T$ be a tree rooted at some node $r$ and, for each node $v$ of $T$, let $P_T(v)$ denote the path in $T$ from $v$ to $r$.  The \emph{$T$-depth} of a node $v$ in $T$ is the length of $P_T(v)$.\footnote{The \emph{length} of a path is equal to the number of edges in the path, which is one less than the number of vertices in the path.}  A path $P$ in $T$ is a \emph{vertical path} if no two nodes of $P$ have the same $T$-depth.  Every node $w$ in $P_T(v)$ is a \emph{$T$-ancestor} of $v$ and $v$ is a \emph{$T$-descendant} of every node $w$ in $P_T(v)$.  Note that $v$ is both a $T$-ancestor and $T$-descendant of itself.  A $T$-ancestor or $T$-descendant $x$ of $v$ is \emph{strict} if $x\neq v$.
+Let $T$ be a tree rooted at some node $r$ and, for each node $v$ of $T$, let $P_T(v)$ denote the path in $T$ from $v$ to $r$.  The \emph{$T$-depth} of a node $v$ in $T$ is the length of $P_T(v)$.\footnote{The \emph{length} of a path is equal to the number of edges in the path, which is one less than the number of vertices in the path.}  A path $P$ in $T$ is a \emph{vertical path} if no two nodes of $P$ have the same $T$-depth.  Every node $w$ in $P_T(v)$ is a \emph{$T$-ancestor} of $v$ and $v$ is a \emph{$T$-descendant} of every node $w$ in $P_T(v)$.  Note that $v$ is both a $T$-ancestor and $T$-descendant of itself.
+% A $T$-ancestor or $T$-descendant $x$ of $v$ is \emph{strict} if $x\neq v$.
 
 For a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $G/\mathcal{P}$ is the graph whose vertices $V(G/\mathcal{P})$ are the sets in $\mathcal{P}$ and in which an edge $XY\in E(G/\mathcal{P})$ if and only if there exists $x\in X$ and $y\in Y$ with $xy\in E(G)$.  Dujmović \etal\  \cite{dujmovic.joret.ea:planar} prove \thmref{product-structure} by first adding edges to a planar graph $G_0$ to complete it to a triangulation $G$, computing a breadth-first search tree $T$ of $G$ and then applying the following result to $G$ and $T$:
 
@@ -110,7 +111,7 @@ Therefore, we will focus on giving a fast algorithm for \thmref{triangulation-pa
 \begin{compactenum}
   \item A cycle $F$ in $G$.
 
-  The subgraph of $G$ induced by the vertices of $F$ and the vertices of $G$ in the interior of $F$ is a near-triangulation, $N$.  The following are preconditions on the cycle $F$:
+  The subgraph of $G$ that includes the edges and vertices of $F$ and the edges and vertices of $G$ in the interior of $F$ is a near-triangulation, $N$.  The following are preconditions on the cycle $F$:
   \begin{compactenum}[(P1)]
     \item The root $r$ of $T$ is not in the interior of $F$, i.e., $r\not\in\ V(N)\setminus V(F)$.
     \item For every vertex $v\in V(N)\setminus V(F)$, and every $T$-descendant $w$ of $v$, $w\in V(N)\setminus V(F)$.
