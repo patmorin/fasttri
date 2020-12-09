@@ -1,0 +1,28 @@
+Responses to the reviews
+
+The reviewer only had some minor suggestions which we respond to here:
+
+---------------------------------------------------------------------
+p2, l52. Triangulation T -> Triangulation G
+
+Corrected.
+
+---------------------------------------------------------------------
+p4. Figure 1. I think there is an issue with Z2 in the central part of the figure, it should go towards South-West, not West (compare with the bottom part of the figure). The same issue is also present in Figure 2, bottom part.
+
+Yes, this mistake came from mixing two versions of the figure.  This has been corrected.
+
+---------------------------------------------------------------------
+p5, l34. "There is no need to repeat their argument" -> you can maybe say something about a tree-decomposition of H of small width that might be constructed explicitly from the induction procedure, and how this part is also fine in your algorithm because you can include it in the second part of your running-time analysis.
+
+I have added a section explaining how the tree decomposition of H can be obtained while computing the partition P, only adding O(n) to the running time of the algorithm.
+
+
+---------------------------------------------------------------------
+p6. l52. et al.In -> et al. In
+p7, l57. satisfy the precondition -> satisfies the precondition
+
+These have been corrected.
+
+---------------------------------------------------------------------
+Finally, since this paper was submitted, I had a student work on implementing the algorithm it describes.  While doing this, we discovered that there is a much simpler alternative to using the data structure of Gabow and Tarjan.  This simple alternative is now described in the Appendix of the paper.
