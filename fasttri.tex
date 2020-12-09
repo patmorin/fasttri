@@ -98,10 +98,10 @@ Throughout this paper we use standard graph theory terminology as used in the te
 
 Let $T$ be a tree rooted at some node $r$ and, for each node $v$ of $T$, let $P_T(v)$ denote the path in $T$ from $v$ to $r$.  The \emph{$T$-depth} of a node $v$ in $T$ is the length of $P_T(v)$.\footnote{The \emph{length} of a path is equal to the number of edges in the path, which is one less than the number of vertices in the path.}  A path $P$ in $T$ is a \emph{vertical path} if no two nodes of $P$ have the same $T$-depth.  Every node $w$ in $P_T(v)$ is a \emph{$T$-ancestor} of $v$ and $v$ is a \emph{$T$-descendant} of every node $w$ in $P_T(v)$.  Note that $v$ is both a $T$-ancestor and $T$-descendant of itself.  A $T$-ancestor or $T$-descendant $x$ of $v$ is \emph{strict} if $x\neq v$.
 
-For a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $G/\mathcal{P}$ is the graph whose vertices $V(G/\mathcal{P})$ are the sets in $\mathcal{P}$ and in which an edge $XY\in E(G/\mathcal{P})$ if and only if there exists $x\in X$ and $y\in Y$ with $xy\in E(G)$.  Dujmović \etal\  \cite{dujmovic.joret.ea:planar} prove \thmref{product-structure} by first adding edges to a planar graph $G_0$ to complete it to a triangulation $G$, computing a breadth-first spanning tree $T$ of $G$ and then applying the following result to $G$ and $T$:
+For a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $G/\mathcal{P}$ is the graph whose vertices $V(G/\mathcal{P})$ are the sets in $\mathcal{P}$ and in which an edge $XY\in E(G/\mathcal{P})$ if and only if there exists $x\in X$ and $y\in Y$ with $xy\in E(G)$.  Dujmović \etal\  \cite{dujmovic.joret.ea:planar} prove \thmref{product-structure} by first adding edges to a planar graph $G_0$ to complete it to a triangulation $G$, computing a breadth-first search tree $T$ of $G$ and then applying the following result to $G$ and $T$:
 
 \begin{thm}\thmlabel{triangulation-partition}
-  For any $n$-vertex triangulation $T$ and any spanning tree $T$ of $G$, there exists a partition $\mathcal{P}$ of $V(G)$ such that each $P\in\mathcal{P}$ induces a vertical path in $T$ and the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
+  For any $n$-vertex triangulation $G$ and any spanning tree $T$ of $G$, there exists a partition $\mathcal{P}$ of $V(G)$ such that each $P\in\mathcal{P}$ induces a vertical path in $T$ and the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
 \end{thm}
 
 Deriving \thmref{product-structure} from \thmref{triangulation-partition} is just a matter of checking definitions.  The graph $H$ in \thmref{product-structure} is the same graph $H$ in \thmref{triangulation-partition}. The path $P$ in \thmref{product-structure} is simply the path $0,1,2,\ldots,h$ where $h$ is the maximum depth of any node in $T$.  Each vertex $v\in V(G)$ maps to the node $\varphi(v):=(X,y)$ where $X$ is the set in $\mathcal{P}$ that contains $v$ and $y$ is the depth of $v$ in $T$.  It is straightforward to check (using the definition of $\boxtimes$ and the fact that $T$ is a breadth-first search tree) that for any  edge $vw\in E(G)$, $\varphi(v)\varphi(w)\in E(H\boxtimes P)$.
@@ -139,18 +139,22 @@ By the time the recursive invocation terminates, each vertex of $N-V(F)$ is incl
 
 If $f>1$, the paths $P_1$, $P_2$, and $P_3$, along with the breadth-first search tree $T$ are used to partition the vertices of $N$ into three colour classes, as follows.  Each vertex $v\in P_i$ has colour $c(v)=i$.  For each vertex $v\in V(N)\setminus V(F)$, (P1) implies that $P_T(v)$ contains some first vertex $v_F$ of $F$.  The vertex $v$ is assigned the colour $c(v)=c(v_F)$.
 
-By Sperner's Lemma, $N$ contains a triangular face $\tau=x_1x_2x_3$ that is \emph{trichromatic}, i.e., $c(x_i)=i$ for each $i\in\{1,2,3\}$. (Note that $0$, $1$, $2$, or $3$ vertices of $\tau$ may be in $V(F)$.)  The edges of $F$, $\tau$, and the paths in $T$ from each $x_i$ to the first vertex of $P_i$ define a graph $M$ with at most 4 interior faces, one of which is $\tau$.  Each of the other (at most three) interior faces does not contain $x_i$ for some $i\in\{1,2,3\}$. For each $i\in\{1,2,3\}$, we let $Q_i$ denote the face that does not contain $x_i$. Observe that, for each $i\in\{1,2,3\}$, $Q_i$ contains no vertex of $P_i$.
+By Sperner's Lemma, $N$ contains a triangular face $\tau=x_1x_2x_3$ that is \emph{trichromatic}, i.e., $c(x_i)=i$ for each $i\in\{1,2,3\}$. (Note that $0$, $1$, $2$, or $3$ vertices of $\tau$ may be in $V(F)$.)  The edges of $F$, $\tau$, and the paths in $T$ from each $x_i$ to the first vertex of $P_i$ define a graph $M$ with at most 4 interior faces, one of which is $\tau$.  Each of the other (at most three) interior faces does not contain $x_i$ for some $i\in\{1,2,3\}$. For each $i\in\{1,2,3\}$, we let $Q_i$ denote the interior face of $M$ that does not contain $x_i$. Observe that, for each $i\in\{1,2,3\}$, $Q_i$ contains no vertex of $P_i$.
 
-For each $i\in\{1,2,3\}$, let $Z_i$ be the path, in $T$, from $x_i$ up to, but not including the first vertex in $P_i$.  Note that $Z_i$ may be empty, which occurs when $x_i$ is a vertex of $P_i$.  Let $Y:=V(Z_1)\cup V(Z_2)\cup V(Z_3)$.  The algorithm adds $V(Z_1)$, $V(Z_2)$ and $V(Z_3)$ to the partition $\mathcal{P}$ and then recurses on each of $Q_1$, $Q_2$, and $Q_3$.
+For each $i\in\{1,2,3\}$, let $Z_i$ be the path, in $T$, from $x_i$ up to, but not including, the first vertex in $P_i$.  Note that $Z_i$ may be empty, which occurs when $x_i$ is a vertex of $P_i$.  Let $Y:=V(Z_1)\cup V(Z_2)\cup V(Z_3)$.  The algorithm adds $V(Z_1)$, $V(Z_2)$ and $V(Z_3)$ to the partition $\mathcal{P}$ and then recurses on each of $Q_1$, $Q_2$, and $Q_3$.
 
-We now argue that $Q_1$ satisifies preconditions (P1)--(P3). The face $Q_1$ is a cycle in $G$ that is contained in the cycle $F$, so $Q_1$ satisifies precondition (P1).  The vertices of $Q_1$ are contained in $V(P_2)\cup V(P_3)\cup Y$.  Therefore every vertex of $Q_1$ is contained in some part of $\mathcal{P}$, so $Q_1$ satisfies precondition (P3).  For each vertex $w$ in the interior of $Q_1$, every $T$-ancestor of $w$ is either in $Y$, $F$, or the exterior of $F$.  Therefore $Q_1$ satisifies precondition (P2).
+We now argue that $Q_1$ satisifies preconditions (P1)--(P3). The face $Q_1$ is a cycle in $G$ that is contained in the cycle $F$, so $Q_1$ satisifies precondition (P1).  The vertices of $Q_1$ are contained in $V(P_2)\cup V(P_3)\cup Y$.  Therefore every vertex of $Q_1$ is contained in some part of $\mathcal{P}$, so $Q_1$ satisfies precondition (P3).
+
+Let $v$ be any vertex in the interior of $Q_1$ and let $w$ be any $T$-descendant of $v$.  In order to show that $Q_1$ satisfies precondition (P2) we must show that $w$ is in the interior of $Q_1$.  If $w$ is not in the interior of $Q_1$ then the path, in $T$ from $w$ to $v$ contains a vertex $v'\in V(Z_2)\cup Z_3\cup V(F)$.  Since $v'$ is a $T$-descendant of $v$, precondition (P2) implies that $v'\not\in V(F)$.  If $v'\in V(Z_i)$ for some $i\in\{2,3\}$, then the path from $w$ to $v$ in $T$ contains the subpath of $Z_i$ beginning at $v'$ and continuing to the last vertex $v''$ of $Z_i$.  The path from $w$ to $v$ in $T$ also contains the $T$-parent $v'''$ of $v''$.  This again contradicts (P2) because, by definition, $v'''\in V(F)$ and is a $T$-descendant of $v$.  Therefore every $T$-descendant $w$ of $v$ is contained in the interior of $Q_1$, so $Q_1$ satisfies precondition (P2).
 
 Next we describe the three portals used when recursing on $Q_1$.
 The cycle $Q_1$ contains at least one vertex each from $V(P_2)$ and $V(P_3)$ and therefore also contains the portal $e_1$, which is also used as one of the three portals in the recursive invocation.  If $V(Z_2)\cup V(Z_3)$ is non-empty, then $Q_1$ contains two edges $e_2'$ and $e_3'$ where $e_2'$ has an endpoint in $V(P_3)$ and an endpoint in $V(Z_2)\cup V(Z_3)$ and where $e_3'$ has an endpoint in $V(P_2)$ and an endpoint in $V(Z_2)\cup V(Z_3)$.  In this case, the edges $e_1$, $e_2'$, and $e_3'$ are used as the three portal in the recursive invocation on $Q_1$.  Note that $e_1$, $e_2'$ and $e_3'$ satisfy precondition (P4) since the vertices of $P_1'$---the path from $e_2'$ to $e_3'$ on $Q_1$ that does not contain $e_1$---are contained in the union of $V(Z_2)$ and $V(Z_3)$, which are included in $\mathcal{P}$.
 
 If $(V(Z_2)\cup V(Z_3))$ is empty---because $x_2\in V(P_2)$ and $x_3\in V(P_3)$---then we artifically create two portals $e_2'$ and $e_3'$ for the recursive invocation by taking any two edges of $Q_1$ other than $e_1$. Clearly, this choice of $e_2'$ and $e_3'$ also satisfies precondition (P4).
 
-The recursive invocations on $Q_2$ and $Q_3$ are done similarly, but rotating the values $1,2,3$.  After these three recursive invocations, every vertex in $N-V(F)$ is included in some part of $P$, so the recursive invocation is complete.  Dujmović \etal\  then show that the contraction $H:=G/\mathcal{P}$ has treewidth at most 8. There is no need to repeat their argument here.  Instead we discuss the running time of this algorithm.
+The recursive invocations on $Q_2$ and $Q_3$ are done similarly, but rotating the values $1,2,3$.  After these three recursive invocations, every vertex in $N-V(F)$ is included in some part of $P$, so the recursive invocation is complete.
+
+\subsection{Running-Time Analysis}
 
 Recall that $f$ denotes the number of inner faces in the near-triangulation $N$.  By having each vertex of $G$ store a pointer to its parent in $T$ and storing $G$ using a representation that simultaneously represents $G$ and its dual graph $G^*$, the colouring of the vertices of $N$ can be done in $O(f)$ time and then the inner triangular faces of $N$ can be traversed in $O(f)$ time to find the trichromatic triangle $\tau$. The rest of the work (adding $Z_1$, $Z_2$, and $Z_3$ to $P$ and preparing the recursive invocations on $Q_1$, $Q_2$, and $Q_3$) is also easily implemented in $O(f)$ time, so the running time of the algorithm is given by the recurrence
 \[  T(f) \le \begin{cases}
@@ -167,6 +171,20 @@ The recursive procedure described above is used to prove \thmref{triangulation-p
   \item Place $\{r\}$, $\{x\}$, and $\{y\}$ in the partition $\mathcal{P}$ and run the recursive procedure described above on the cycle $F:=rxy$ with the portals $e_1=rx$, $e_2=xy$ and $e_3=yr$.
 \end{enumerate}
 The first step of this procedure runs in constant time.  The second step requires $\Theta(f^2)=\Theta(n^2)$ time in the worst case.
+
+
+\subsection{Treewidth Analysis}
+\seclabel{treewidth-analysis}
+
+Dujmović \etal\ then show that the contraction $H:=N/\mathcal{P}$ has treewidth at most 8.  Although it is not necessary to repeat their argument here, it is worth doing so because it illustrates that a width-$\le\!8$ tree decomposition of $H$ can be easily computed during the construction of the partition $\mathcal{P}$.  (See Diestel \cite[Chapter 12]{diestel:graph} for definitions of treewidth and tree decompositions.)
+
+The argument that the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$ is constructive in the sense that is produces a tree-decomposition of $H$ in which each bag has size at most 9.  The argument mirrors the inductive structure of the algorithm used to create $\mathcal{P}$.  Specifically, the recursive invocation on $F$ takes as input the set $X$ (guaranteed by (P4)) of at most 6 parts of $\mathcal{P}$ that cover $V(F)$ and produces a tree-decomposition of $N/\mathcal{P}$ that has some bag $B$ containing $X$ and in which every bag has size at most $9$.
+
+For each $i\in\{1,2,3\}$, the at most 4 of the parts in $X$ that cover $V(F-P_i))$ (again, guaranteed by (P4)) and the two parts $V(Z_j)$, $j\in\{1,2,3\}\setminus\{i\}$ are used as the input $X_i$ to the recursive call on the cycle $Q_i$ that bounds the near-triangulation $N_i$. This produces a tree decomposition of $N_i/\mathcal{P}$ in which some bag $B_i$ contains $X_i$ and every bag has size at most $9$.
+
+The three tree decompositions of $N_1$, $N_2$, and $N_3$ are then joined by introducing a bag $B:=X\cup\{V(Z_1),V(Z_2),V(Z_3)\}$ and making $B$ adjacent to $B_i$ for each $i\in\{1,2,3\}$.  It is straightforward to verify that this does indeed give a tree decomposition of $N/\mathcal{P}$.  The bag $B$ has size $|X|+3\le 9$ and (inductively) every other bag has size at most 9, thus proving that the treewidth of $N/\mathcal{P}$ is at most 8.
+
+We note that this tree decomposition of $H$ can be computed at the same time as the partition $\mathcal{P}$ without contributing more than $O(|V(H)|)\subseteq O(n)$ to the running time of the algorithm.
 
 \section{A Faster Algorithm}
 \seclabel{faster}
@@ -192,13 +210,13 @@ Our algorithm makes use of a data structure that preprocesses a $(n+1)$-vertex t
     \item $\textsc{NearestMarkedAncestor}(w)$:  Return the first node $v\in S$ that is on the path from $w$ to the root of $T$.
 \end{itemize}
 
-In \appref{data_structures} we show how to use standard techniques to obtain the following result:
+In \appref{data_structures} we show how to use standard techniques to obtain the following result:\footnote{A data structure supporting these two operations in $O(1)$ amortized time per operation can be obtained from the work of Gabow and Tarjan \cite{gabow.tarjan:linear}, but the data structure described in \appref{data_structures} is considerably simpler to implement and is fast enough for our purposes.}
 
 \begin{lem}\lemlabel{nearest_marked_ancestor}
     There exists a data structure that preprocesses any $n$-node rooted tree $T$ and supports the $\textsc{Mark}(w)$ and $\textsc{NearestMarkedAncestor}(w)$ operations. Each $\textsc{NearestMarkedAncestor}(w)$ operation takes $O(1)$ time and any sequence of $\textsc{Mark}(w)$ operations takes a total of $O(n\log n)$ time.
 \end{lem}
 
-In the remainder of this section, we will show how \lemref{nearest_marked_ancestor} can be used to achieve the desired running time.  It is worth noting that the algorithm we now describe produces exactly the same partition $\mathcal{P}$ produced by the algorithm of Dujmović \etal\ and therefore $\mathcal{P}$ has all the properties described by Dujmović \etal.  In particular, the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
+In the remainder of this section, we will show how \lemref{nearest_marked_ancestor} can be used to achieve the desired running time.  It is worth noting that the algorithm we now describe produces exactly the same partition $\mathcal{P}$ produced by the algorithm of Dujmović \etal\ and therefore $\mathcal{P}$ has all the properties described by Dujmović \etal.\  In particular, the quotient graph $H:=G/\mathcal{P}$ has treewidth at most $8$.
 
 As before, each recursive step takes as input the cycle $F$ and the three portals $e_1$, $e_2$, and $e_3$.  Additionally, the algorithm requires that the vertices of $P_1$, $P_2$ and $P_3$ are coloured with three different colours.  More precisely, there are three distinct integers $c_1$, $c_2$ and $c_3$ such that $c(v)=c_i$ for each $v\in V(P_i)$ and each $i\in\{1,2,3\}$.  The nearest marked ancestor data structure maintaining $S\subseteq V(T)$ is set up so that $V(F)\subseteq S$ and $(V(N)\setminus V(F))\cap S=\emptyset$.  That is, $S$ contains all vertices on the outer face of $N$, but none of the inner vertices.
 
@@ -284,7 +302,7 @@ Another variant of \thmref{triangulation-partition} described by Dujmović \etal
 In at least two cases, the extra work done in these generalizations can be done in $O(n\log n)$ time.  Combined with \thmref{main}, this gives $O(n\log n)$ time algorithms for the corresponding generalizations of \thmref{product-structure}.
 
 \begin{itemize}
-  \item For graphs $G$ of fixed Euler genus $g$, the result of Dujmović \etal\ \cite{dujmovic.joret.ea:planar} only requires finding a genus-$g$ embedding of $G$, computing a breadth-first spanning tree $T$ of $G$, and computing any spanning-tree $D$ of the dual graph that does not cross edges of $T$.  The two spanning trees $T$ and $D$ can be computed in $O(n)$ time using standard algorithms.  The genus-$g$ embedding of $G$ can be computed in $O(n)$ time using an algorithm of Mohar \cite{mohar:linear}
+  \item For graphs $G$ of fixed Euler genus $g$, the result of Dujmović \etal\ \cite{dujmovic.joret.ea:planar} only requires finding a genus-$g$ embedding of $G$, computing a breadth-first-search tree $T$ of $G$, and computing any spanning-tree $D$ of the dual graph that does not cross edges of $T$.  The two spanning trees $T$ and $D$ can be computed in $O(n)$ time using standard algorithms.  The genus-$g$ embedding of $G$ can be computed in $O(n)$ time using an algorithm of Mohar \cite{mohar:linear}
 
   \item Given a $k$-plane embedding of a $k$-planar graph $G$, the result of Dujmović, Morin, and Wood \cite{dujmovic.morin.ea:structure} applies \thmref{product-structure} directly to the planar graph obtained by adding a dummy vertex at every point where a pair of edges crosses.
 
@@ -317,6 +335,8 @@ The obvious open problem left by our work is that of finding a faster algorithm.
 \section*{Acknowledgement}
 
 Part of this research was conducted during the Eighth Workshop on Geometry and Graphs, held at the Bellairs Research Institute, January~31--February~7, 2020.  The author is grateful to the other organizers and participants for providing a stimulating research environment.
+
+The author would like to thank Vida~Dujmović and our summer student \mbox{Ivana~Marusic}.  Ivana implemented the algorithm described in \secref{original} and the algorithm described in \secref{faster}.  The second implementation motivated the development of the simple nearest marked ancestor data structure in \appref{data_structures}.
 
 
 \bibliographystyle{plainurl}

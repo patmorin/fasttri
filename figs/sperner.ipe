@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70212" creator="Ipe 7.2.13">
-<info created="D:20200402142341" modified="D:20200405215614"/>
+<ipe version="70218" creator="Ipe 7.2.21">
+<info created="D:20200402142341" modified="D:20201209133835"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -190,8 +190,8 @@ h
 <arrowsize name="small" value="5"/>
 <arrowsize name="tiny" value="3"/>
 <color name="red" value="1 0 0"/>
-<color name="green" value="0 1 0"/>
 <color name="blue" value="0 0 1"/>
+<color name="green" value="0 1 0"/>
 <color name="yellow" value="1 1 0"/>
 <color name="orange" value="1 0.647 0"/>
 <color name="gold" value="1 0.843 0"/>
@@ -215,8 +215,8 @@ h
 <color name="lightgray" value="0.827"/>
 <color name="lightgreen" value="0.565 0.933 0.565"/>
 <color name="lightyellow" value="1 1 0.878"/>
-<dashstyle name="dashed" value="[4] 0"/>
 <dashstyle name="dotted" value="[1 3] 0"/>
+<dashstyle name="dashed" value="[4] 0"/>
 <dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
 <dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
 <textsize name="large" value="\large"/>
@@ -276,6 +276,38 @@ h
 <view layers="edges sperner mercedes mercedes-monochrome mercedes-dead mercedes-sperners mercedes-bichrome mercedes-portals" active="mercedes-bichrome"/>
 <view layers="edges trees monochrome bichrome portals sperner dual-paths" active="dual-paths"/>
 <view layers="portals dual-paths mercedes-skeleton dual-paths-faces" active="dual-paths-faces"/>
+<view layers="vertices trees portals" active="dual-paths-faces"/>
+<path layer="bichrome" fill="lightyellow">
+164.655 524.921 m
+203.842 511.261 l
+197.218 529.03 l
+205.109 556.417 l
+227.39 574.752 l
+204.645 589.142 l
+177.722 569.414 l
+183.06 538.546 l
+h
+</path>
+<path layer="monochrome" fill="lightblue">
+119.349 606.785 m
+137.57 594.248 l
+173.545 590.07 l
+204.645 589.142 l
+177.722 569.414 l
+183.06 538.546 l
+164.655 524.921 l
+135.163 547.567 l
+119.349 576.141 l
+h
+</path>
+<path layer="trees" stroke="black">
+183.06 538.546 m
+177.722 569.414 l
+</path>
+<path stroke="black">
+177.722 569.414 m
+204.645 589.142 l
+</path>
 <path layer="dual-paths-faces" stroke="black" fill="lightyellow">
 164.655 524.92 m
 203.842 511.261 l
@@ -455,18 +487,7 @@ h
 276.129 645.308 m
 289.538 666.105 l
 </path>
-<path layer="bichrome" stroke="black" fill="lightyellow" pen="heavier">
-164.655 524.921 m
-203.842 511.261 l
-197.218 529.03 l
-205.109 556.417 l
-227.39 574.752 l
-204.645 589.142 l
-177.722 569.414 l
-183.06 538.546 l
-h
-</path>
-<path stroke="black" fill="lightyellow" pen="heavier">
+<path layer="bichrome" fill="lightyellow">
 232.496 597.265 m
 227.39 574.752 l
 259.418 552.239 l
@@ -482,7 +503,7 @@ h
 232.496 597.265 l
 h
 </path>
-<path stroke="black" fill="lightyellow" pen="heavier">
+<path fill="lightyellow">
 135.163 635.359 m
 156.834 611.423 l
 180.507 618.385 l
@@ -529,7 +550,7 @@ h
 203.842 511.261 m
 164.655 524.921 l
 </path>
-<path layer="monochrome" stroke="black" fill="lightgreen" pen="heavier">
+<path layer="monochrome" fill="lightgreen">
 203.842 511.261 m
 197.218 529.03 l
 205.109 556.417 l
@@ -546,7 +567,7 @@ h
 247.432 508.434 l
 h
 </path>
-<path stroke="black" fill="pink">
+<path fill="pink">
 135.163 635.359 m
 156.834 611.423 l
 180.507 618.385 l
@@ -561,18 +582,6 @@ h
 247.432 674.491 l
 203.842 671.664 l
 164.655 658.005 l
-h
-</path>
-<path stroke="black" fill="lightblue" pen="heavier">
-119.349 606.785 m
-137.57 594.248 l
-173.545 590.07 l
-204.645 589.142 l
-177.722 569.414 l
-183.06 538.546 l
-164.655 524.921 l
-135.163 547.567 l
-119.349 576.141 l
 h
 </path>
 <path layer="edges" stroke="black">
@@ -675,10 +684,6 @@ h
 205.109 556.417 m
 177.722 569.414 l
 177.722 569.414 l
-</path>
-<path stroke="black">
-177.722 569.414 m
-183.06 538.546 l
 </path>
 <path stroke="black">
 183.06 538.546 m
@@ -803,14 +808,6 @@ h
 <path stroke="black">
 180.507 618.385 m
 204.645 589.142 l
-</path>
-<path stroke="black">
-204.645 589.142 m
-177.722 569.414 l
-</path>
-<path stroke="black">
-204.645 589.142 m
-205.109 556.417 l
 </path>
 <path stroke="black">
 204.645 589.142 m
@@ -1230,7 +1227,7 @@ h
 </path>
 <path stroke="blue" pen="ultrafat" arrow="normal/normal">
 173.545 590.07 m
-144.069 567.789 l
+137.57 594.248 l
 </path>
 <path stroke="blue" pen="ultrafat" arrow="normal/normal">
 144.069 567.789 m
@@ -1250,14 +1247,13 @@ h
 </path>
 <path stroke="blue" pen="ultrafat" arrow="normal/normal">
 204.645 589.142 m
-177.722 569.414 l
+173.545 590.07 l
 </path>
 <path stroke="darkgreen" pen="ultrafat" arrow="normal/normal">
 227.39 574.752 m
 235.513 547.83 l
 </path>
 <use name="mark/disk(sx)" pos="197.218 529.03" size="large" stroke="darkgreen"/>
-<use name="mark/disk(sx)" pos="205.109 556.417" size="large" stroke="darkgreen"/>
 <use name="mark/disk(sx)" pos="235.513 547.83" size="large" stroke="darkgreen"/>
 <use name="mark/disk(sx)" pos="227.39 574.752" size="large" stroke="darkgreen"/>
 <use name="mark/disk(sx)" pos="259.418 552.239" size="large" stroke="darkgreen"/>
@@ -1399,9 +1395,9 @@ h
 </path>
 <path layer="mercedes" stroke="black" pen="ultrafat" arrow="normal/normal">
 204.645 589.142 m
-177.722 569.414 l
+173.545 590.07 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path stroke="blue" pen="ultrafat" arrow="normal/normal">
 177.722 569.414 m
 159.155 551.079 l
 </path>
@@ -1487,8 +1483,8 @@ h
 <use name="mark/disk(sx)" pos="247.432 508.434" size="large" stroke="darkgreen"/>
 <use name="mark/disk(sx)" pos="203.842 511.262" size="large" stroke="darkgreen"/>
 <use name="mark/disk(sx)" pos="204.645 589.142" size="large" stroke="black"/>
-<use name="mark/disk(sx)" pos="177.722 569.414" size="large" stroke="black"/>
-<use name="mark/disk(sx)" pos="159.155 551.079" size="large" stroke="black"/>
+<use name="mark/disk(sx)" pos="177.722 569.414" size="large" stroke="blue"/>
+<use name="mark/disk(sx)" pos="159.155 551.079" size="large" stroke="blue"/>
 <use name="mark/disk(sx)" pos="197.218 529.03" size="large" stroke="black"/>
 <use name="mark/disk(sx)" pos="235.513 547.83" size="large" stroke="black"/>
 <use name="mark/disk(sx)" pos="227.39 574.752" size="large" stroke="black"/>
@@ -1501,11 +1497,11 @@ h
 256.633 584.732 m
 248.046 615.136 l
 </path>
-<path stroke="black" pen="ultrafat" arrow="normal/normal">
+<path stroke="blue" pen="ultrafat" arrow="normal/normal">
 205.109 556.417 m
 197.218 529.03 l
 </path>
-<use name="mark/disk(sx)" pos="205.109 556.417" size="large" stroke="black"/>
+<use name="mark/disk(sx)" pos="205.109 556.417" size="large" stroke="blue"/>
 <path stroke="red" pen="ultrafat" arrow="normal/normal">
 156.834 611.423 m
 158.923 630.454 l
@@ -1575,10 +1571,6 @@ h
 119.349 606.785 l
 </path>
 <path stroke="blue" pen="ultrafat" arrow="normal/normal">
-173.545 590.07 m
-144.069 567.789 l
-</path>
-<path stroke="blue" pen="ultrafat" arrow="normal/normal">
 144.069 567.789 m
 135.163 547.567 l
 </path>
@@ -1603,7 +1595,7 @@ h
 <use name="mark/disk(sx)" pos="278.682 568.95" size="large" stroke="darkgreen"/>
 <use name="mark/disk(sx)" pos="259.418 552.239" size="large" stroke="darkgreen"/>
 <use name="mark/disk(sx)" pos="224.14 520.907" size="large" stroke="darkgreen"/>
-<use name="mark/disk(sx)" pos="173.545 590.07" size="large" stroke="blue"/>
+<use name="mark/disk(sx)" pos="173.545 590.07" size="large" stroke="black"/>
 <use name="mark/disk(sx)" pos="183.06 538.546" size="large" stroke="blue"/>
 <use name="mark/disk(sx)" pos="218.57 623.723" size="large" stroke="black"/>
 <path layer="mercedes-dead" fill="black">
@@ -1843,5 +1835,15 @@ h
 203.842 671.664 m
 247.432 674.491 l
 </path>
+<path layer="mercedes" stroke="black" pen="ultrafat" arrow="normal/normal">
+173.545 590.07 m
+137.57 594.248 l
+</path>
+<use layer="mercedes-bichrome" matrix="1 0 0 1 24.72 -8.352" name="mark/disk(sx)" pos="119.349 576.141" size="large" stroke="blue"/>
+<path layer="edges" stroke="black">
+204.645 589.142 m
+205.109 556.417 l
+</path>
+<use layer="trees" name="mark/disk(sx)" pos="205.109 556.417" size="large" stroke="darkgreen"/>
 </page>
 </ipe>
